@@ -1,0 +1,168 @@
+---
+title: "Quickstart"
+description: "Get up and running with Live Log Insight in 5 minutes."
+---
+
+# Quickstart Guide
+
+Get Live Log Insight running in just a few minutes.
+
+## Prerequisites
+
+- Python 3.11+
+- [uv](https://docs.astral.sh/uv/) package manager
+- Access to log sources you want to analyze
+
+## Installation
+
+1. **Clone the repository**
+```bash
+git clone https://github.com/yourusername/live-log-insight.git
+cd live-log-insight
+```
+
+2. **Install dependencies**
+```bash
+uv sync
+```
+
+3. **Verify installation**
+```bash
+uv run python main.py --help
+```
+
+## Basic Usage
+
+### Run a Complete Pipeline
+
+Analyze logs from the past 24 hours in production:
+
+```bash
+uv run main.py --time-range 24h --environment production
+```
+
+### Analyze Specific Service
+
+Focus on a specific service:
+
+```bash
+uv run main.py --time-range 24h --environment production --service-name auth-service
+```
+
+### Filter by Severity
+
+Only analyze ERROR-level logs:
+
+```bash
+uv run main.py --time-range 24h --severity-filter ERROR
+```
+
+## Configuration
+
+### Using Default Configuration
+
+The system uses `config.json` for default settings:
+
+```json
+{
+  "project": "agentx-logs",
+  "time_range": "24h",
+  "max_logs": 10000,
+  "environment": "production",
+  "log_sources_file": "src/agentX/config/log_sources.yaml",
+  "log_patterns_file": "src/agentX/config/log_patterns.yaml",
+  "baseline_metrics_file": "src/agentX/config/baseline_metrics.json",
+  "anomaly_thresholds_file": "src/agentX/config/anomaly_thresholds.yaml",
+  "output_dir": "output"
+}
+```
+
+### Configure Log Sources
+
+Edit `src/agentX/config/log_sources.yaml`:
+
+```yaml
+sources:
+  - type: filesystem
+    path: /var/log
+    name: app-logs
+  - type: elasticsearch
+    host: es.example.com
+    port: 9200
+    index: "auth-service-*"
+    name: elasticsearch-logs
+```
+
+## Running the Pipeline Script
+
+You can also run the pipeline directly:
+
+```bash
+./scripts/pipeline.sh --help
+```
+
+## Viewing Results
+
+After running the pipeline, check the `output/` directory:
+
+```bash
+# View the summary report
+cat output/summary.md
+
+# View detected anomalies
+cat output/anomalies.json | python -m json.tool
+
+# View recommendations
+cat output/recommendations.json | python -m json.tool
+```
+
+## Sample Data
+
+The project includes sample data for testing:
+
+```bash
+# Run with sample metadata
+uv run main.py --time-range 24h --environment production --use-sample-data
+```
+
+Sample files are located in `metadata/`:
+- `sample_logs.json` - Sample raw logs
+- `sample_parsed_events.json` - Sample parsed events
+- `sample_metrics.json` - Sample metrics
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card
+    title="Core Concepts"
+    icon="book"
+    href="/concepts/architecture"
+  >
+    Learn how the system works.
+  </Card>
+  <Card
+    title="Skills Reference"
+    icon="cubes"
+    href="/skills/livelogs-insights"
+  >
+    Explore all available skills.
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+### No logs found
+
+Ensure your log sources are correctly configured in `src/agentX/config/log_sources.yaml`.
+
+### Permission denied
+
+Make sure the user running the script has read access to log directories.
+
+### Out of memory
+
+Reduce `max_logs` in `config.json` or use a smaller time range.
+
+### Dependencies not found
+
+Run `uv sync` to reinstall all dependencies.

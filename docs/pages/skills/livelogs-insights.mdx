@@ -1,0 +1,90 @@
+---
+title: "Live Logs Insights"
+description: "Orchestrates end-to-end log analysis pipeline to detect anomalies, extract patterns, and generate actionable summaries."
+---
+
+# Live Logs Insights
+
+The main orchestration skill that coordinates the complete log analysis pipeline.
+
+## Overview
+
+This skill is the entry point for comprehensive log analysis. It activates and coordinates all other skills in sequence to transform raw logs into actionable insights.
+
+## When to Use
+
+Activate this skill when:
+- User requests log analysis or system health insights
+- Daily/weekly operational summaries are needed
+- Investigating incidents or unusual behavior
+- Monitoring production or staging systems
+
+## Directory Structure
+
+```
+livelogs_insights/
+├── SKILL.md              # This file
+└── scripts/
+    └── run.py           # Orchestration script
+```
+
+## Instructions
+
+1. **Read configuration**: Load `config/log_sources.yaml` and `config/anomaly_thresholds.yaml`
+
+2. **Execute pipeline**: Run the orchestration script with input parameters
+
+3. **Pipeline stages**: The script coordinates:
+   - `logsource_discovery` - Identifies log sources
+   - `fetch_logs` - Retrieves raw logs
+   - `parse_logs` - Normalizes log formats
+   - `aggregate_logs` - Computes metrics
+   - `detect_anomalies` - Identifies issues
+   - `high_hypothesis` - Generates explanations (optional)
+   - `generate_summary` - Creates report
+   - `recommend_actions` - Suggests next steps
+
+4. **Review outputs**: Results are written to `output/`:
+   - `summary.md` - Human-readable report
+   - `anomalies.json` - Detected issues
+   - `recommendations.json` - Action items
+   - `metrics.json` - Aggregated statistics
+   - `hypotheses.json` - Root cause hypotheses
+
+5. **Present findings**: Include:
+   - Executive summary of system health
+   - Key anomalies with confidence levels
+   - Root cause hypotheses (when available)
+   - Prioritized recommendations
+   - Supporting metrics and evidence
+
+6. **Handle errors**: If pipeline fails:
+   - Log the error with context
+   - Return partial results if available
+   - Suggest manual investigation steps
+   - Never hallucinate missing data
+
+## Input Parameters
+
+```json
+{
+  "time_range": "24h",
+  "environment": "production",
+  "service_name": "auth-service",
+  "severity_filter": "ERROR"
+}
+```
+
+## Output
+
+The skill orchestrates all pipeline stages and produces comprehensive analysis reports.
+
+## Related Skills
+
+- [Log Source Discovery](/skills/logsource-discovery)
+- [Fetch Logs](/skills/fetch-logs)
+- [Parse Logs](/skills/parse-logs)
+- [Aggregate Logs](/skills/aggregate-logs)
+- [Detect Anomalies](/skills/detect-anomalies)
+- [Generate Summary](/skills/generate-summary)
+- [Recommend Actions](/skills/recommend-actions)

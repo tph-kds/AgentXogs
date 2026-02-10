@@ -1,0 +1,85 @@
+---
+title: "Daily Health Check"
+description: "Example: Running daily system health analysis with Live Log Insight."
+---
+
+# Daily Health Check Example
+
+This example demonstrates how to run a daily health check on your production system.
+
+## Scenario
+
+You want to analyze the past 24 hours of production logs to get a system health report.
+
+## Command
+
+```bash
+uv run main.py --time-range 24h --environment production
+```
+
+## Expected Output
+
+The pipeline will:
+1. Discover production log sources
+2. Fetch logs from the last 24 hours
+3. Parse and normalize log entries
+4. Aggregate metrics
+5. Detect any anomalies
+6. Generate hypotheses (if anomalies found)
+7. Create a summary report
+8. Provide recommendations
+
+## Sample Summary Output
+
+```markdown
+# System Log Summary – Production
+**Time Range**: Last 24 hours (2026-02-09 14:00 → 2026-02-10 14:00)
+**Generated**: 2026-02-10 14:35:00 UTC
+
+## Executive Summary
+✅ **System healthy** - No critical anomalies detected
+- Total Events: 12,034
+- Error Rate: 0.9% (baseline: 0.9%)
+- Most Active Service: auth-service
+
+## Key Metrics
+- **Total Events**: 12,034
+- **Error Rate**: 0.9% (baseline: 0.9%)
+- **Volume Change**: -5.1% vs baseline
+
+## Service Breakdown
+
+### auth-service
+- Total: 5,234 events
+- Errors: 123 (2.4%)
+- P95 Latency: 1,200ms
+
+### payment-service
+- Total: 3,456 events
+- Errors: 12 (0.3%)
+- P95 Latency: 800ms
+
+## Top Error Signatures
+1. **AUTH_FAILED** - 89 occurrences (72.3%)
+2. **RATE_LIMIT** - 34 occurrences (27.7%)
+
+## Recommendations
+
+✅ No immediate action required. System is operating within normal parameters.
+```
+
+## Automating Daily Checks
+
+Add to your crontab for automated daily reports:
+
+```bash
+# Run at 2 AM daily
+0 2 * * * cd /path/to/live-log-insight && \
+  uv run main.py --time-range 24h --environment production && \
+  cat output/summary.md | mail -s "Daily Health Report" ops-team@example.com
+```
+
+## Related Skills
+
+- [Live Logs Insights](/skills/livelogs-insights)
+- [Generate Summary](/skills/generate-summary)

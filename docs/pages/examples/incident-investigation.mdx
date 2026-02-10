@@ -1,0 +1,112 @@
+---
+title: "Incident Investigation"
+description: "Example: Investigating an incident with Live Log Insight."
+---
+
+# Incident Investigation Example
+
+This example demonstrates how to investigate an incident when users report errors.
+
+## Scenario
+
+Users report that the auth-service is experiencing connection issues. You need to investigate what happened between 2 PM and 3 PM.
+
+## Command
+
+```bash
+uv run main.py \
+  --time-range 2h \
+  --environment production \
+  --service-name auth-service \
+  --severity-filter ERROR
+```
+
+## Expected Output
+
+The pipeline will:
+1. Discover auth-service log sources
+2. Fetch ERROR-level logs from the past 2 hours
+3. Parse and normalize the logs
+4. Aggregate metrics
+5. Detect anomalies
+6. Generate hypotheses
+7. Create a detailed incident report
+
+## Sample Incident Output
+
+```markdown
+# Incident Analysis - auth-service
+**Time Range**: 2026-02-10 14:00 → 2026-02-10 16:00
+**Generated**: 2026-02-10 16:15:00 UTC
+
+## Executive Summary
+⚠️ **2 anomalies detected** requiring attention
+
+## Detected Anomalies
+
+### 🔴 High Severity: ERROR_SPIKE in auth-service
+- **Confidence**: 92%
+- **Evidence**: Error rate increased 3.4x vs baseline (0.9% → 3.1%)
+- **First Detected**: 2026-02-10 14:32:00 UTC
+- **Duration**: ~45 minutes
+
+### 🟡 Medium Severity: NEW_ERROR_SIGNATURE
+- **Signature**: DB_TIMEOUT
+- **Confidence**: 85%
+- **Occurrences**: 145
+- **First Seen**: 2026-02-10 14:15:00 UTC
+
+## Possible Explanations
+
+💡 **Hypothesis 1** (Confidence: 75%)
+Recent deployment at 14:15 may correlate with increased DB_TIMEOUT errors
+
+💡 **Hypothesis 2** (Confidence: 60%)
+Downstream database latency increase could affect auth-service
+
+## Recommendations
+
+### 1. 🔴 HIGH PRIORITY - Check deployment at 14:15 UTC
+**Estimated Time**: 15 minutes
+**Steps**:
+- Review deployment logs: kubectl logs -n prod deploy/auth-service
+- Check for database migrations
+- Compare with staging deployment
+
+### 2. 🔴 HIGH PRIORITY - Inspect database connection pool
+**Estimated Time**: 20 minutes
+**Steps**:
+- Check database server metrics
+- Review connection pool size
+- Analyze slow query logs
+
+### 3. 🟡 MEDIUM PRIORITY - Add alert for DB_TIMEOUT
+**Estimated Time**: 10 minutes
+**Steps**:
+- Create alert rule in monitoring system
+- Set threshold: > 10 occurrences in 5 minutes
+```
+
+## Interactive Investigation
+
+For deeper investigation, run specific skills:
+
+```bash
+# Only fetch logs
+uv run .agents/skills/fetch_logs/scripts/run.py \
+  --sources config/log_sources.yaml \
+  --time-range 2h \
+  --service auth-service
+
+# Only detect anomalies
+uv run .agents/skills/detect_anomalies/scripts/run.py \
+  --metrics output/metrics.json \
+  --thresholds config/anomaly_thresholds.yaml
+```
+
+## Related Skills
+
+- [Log Source Discovery](/skills/logsource-discovery)
+- [Fetch Logs](/skills/fetch-logs)
+- [Detect Anomalies](/skills/detect-anomalies)
+- [High Hypothesis](/skills/high-hypothesis)

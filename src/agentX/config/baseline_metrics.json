@@ -1,0 +1,34 @@
+{
+  "version": "1.0",
+  "generated_at": "2026-02-10T00:00:00Z",
+  "description": "Baseline metrics for comparison - replace with actual historical data",
+  "metrics": {
+    "total_events": 10000,
+    "error_rate": 0.009,
+    "error_count": 90,
+    "hourly_volume_avg": 417
+  },
+  "top_signatures": [
+    {"signature": "TIMEOUT", "count": 45, "percentage": 50.0},
+    {"signature": "AUTH_FAILED", "count": 30, "percentage": 33.3},
+    {"signature": "RATE_LIMIT", "count": 15, "percentage": 16.7}
+  ],
+  "service_stats": {
+    "auth-service": {
+      "total": 5000,
+      "errors": 50,
+      "error_rate": 0.01,
+      "p50_latency_ms": 100,
+      "p95_latency_ms": 500,
+      "p99_latency_ms": 1000
+    }
+  },
+  "day_of_week_patterns": {
+    "weekday": {"multiplier": 1.0},
+    "weekend": {"multiplier": 0.8}
+  },
+  "hourly_patterns": {
+    "peak": ["09:00", "10:00", "14:00", "15:00"],
+    "low": ["02:00", "03:00", "04:00"]
+  }
+}

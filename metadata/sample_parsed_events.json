@@ -1,0 +1,175 @@
+{
+  "description": "Sample parsed log events for testing aggregation and anomaly detection",
+  "events": [
+    {
+      "timestamp": "2026-02-10T15:00:00Z",
+      "service": "auth-service",
+      "level": "INFO",
+      "signature": "INFO",
+      "message": "User login successful for user_id=user-12345",
+      "metadata": {
+        "host": "prod-auth-01",
+        "file": "/var/log/auth/app.log"
+      }
+    },
+    {
+      "timestamp": "2026-02-10T15:01:23Z",
+      "service": "auth-service",
+      "level": "ERROR",
+      "signature": "DB_TIMEOUT",
+      "message": "Database connection timeout after 3000ms - user_id=user-12345",
+      "metadata": {
+        "host": "prod-auth-01",
+        "file": "/var/log/auth/app.log",
+        "latency_ms": 3000
+      }
+    },
+    {
+      "timestamp": "2026-02-10T15:02:45Z",
+      "service": "auth-service",
+      "level": "ERROR",
+      "signature": "AUTH_FAILED",
+      "message": "Authentication failed for user_id=user-67890 - invalid credentials",
+      "metadata": {
+        "host": "prod-auth-02",
+        "file": "/var/log/auth/app.log"
+      }
+    },
+    {
+      "timestamp": "2026-02-10T15:03:12Z",
+      "service": "auth-service",
+      "level": "WARN",
+      "signature": "WARN",
+      "message": "High memory usage detected: 85% on host prod-auth-01",
+      "metadata": {
+        "host": "prod-auth-01",
+        "file": "/var/log/auth/app.log",
+        "percentage": 85
+      }
+    },
+    {
+      "timestamp": "2026-02-10T15:04:00Z",
+      "service": "auth-service",
+      "level": "ERROR",
+      "signature": "RATE_LIMIT",
+      "message": "Rate limit exceeded for API endpoint /api/v1/payment - request_id=req-abc123",
+      "metadata": {
+        "host": "prod-auth-01",
+        "file": "/var/log/auth/app.log"
+      }
+    },
+    {
+      "timestamp": "2026-02-10T15:05:33Z",
+      "service": "auth-service",
+      "level": "INFO",
+      "signature": "INFO",
+      "message": "User logout successful for user_id=user-12345",
+      "metadata": {
+        "host": "prod-auth-02",
+        "file": "/var/log/auth/app.log"
+      }
+    },
+    {
+      "timestamp": "2026-02-10T15:06:15Z",
+      "service": "auth-service",
+      "level": "ERROR",
+      "signature": "DB_TIMEOUT",
+      "message": "Database connection timeout after 5000ms - request_id=req-def456",
+      "metadata": {
+        "host": "prod-auth-01",
+        "file": "/var/log/auth/app.log",
+        "latency_ms": 5000
+      }
+    },
+    {
+      "timestamp": "2026-02-10T15:07:00Z",
+      "service": "auth-service",
+      "level": "ERROR",
+      "signature": "AUTH_FAILED",
+      "message": "Authentication failed for user_id=user-11111 - token expired",
+      "metadata": {
+        "host": "prod-auth-01",
+        "file": "/var/log/auth/app.log"
+      }
+    },
+    {
+      "timestamp": "2026-02-10T15:08:22Z",
+      "service": "auth-service",
+      "level": "WARN",
+      "signature": "LATENCY_SPIKE",
+      "message": "Response latency high: 2500ms for endpoint /api/v1/users",
+      "metadata": {
+        "host": "prod-auth-02",
+        "file": "/var/log/auth/app.log",
+        "latency_ms": 2500
+      }
+    },
+    {
+      "timestamp": "2026-02-10T15:09:45Z",
+      "service": "auth-service",
+      "level": "INFO",
+      "signature": "INFO",
+      "message": "Password reset request received for user_id=user-22222",
+      "metadata": {
+        "host": "prod-auth-01",
+        "file": "/var/log/auth/app.log"
+      }
+    },
+    {
+      "timestamp": "2026-02-10T15:10:00Z",
+      "service": "auth-service",
+      "level": "ERROR",
+      "signature": "OOM",
+      "message": "Out of memory error on host prod-auth-01 - available: 512MB",
+      "metadata": {
+        "host": "prod-auth-01",
+        "file": "/var/log/auth/app.log"
+      }
+    },
+    {
+      "timestamp": "2026-02-10T15:11:30Z",
+      "service": "auth-service",
+      "level": "ERROR",
+      "signature": "DB_TIMEOUT",
+      "message": "Database connection timeout after 4000ms - request_id=req-ghi789",
+      "metadata": {
+        "host": "prod-auth-02",
+        "file": "/var/log/auth/app.log",
+        "latency_ms": 4000
+      }
+    },
+    {
+      "timestamp": "2026-02-10T15:12:15Z",
+      "service": "auth-service",
+      "level": "INFO",
+      "signature": "INFO",
+      "message": "Session created for user_id=user-33333",
+      "metadata": {
+        "host": "prod-auth-01",
+        "file": "/var/log/auth/app.log"
+      }
+    },
+    {
+      "timestamp": "2026-02-10T15:13:00Z",
+      "service": "auth-service",
+      "level": "ERROR",
+      "signature": "RATE_LIMIT",
+      "message": "Rate limit exceeded for API endpoint /api/v1/orders - request_id=req-jkl012",
+      "metadata": {
+        "host": "prod-auth-02",
+        "file": "/var/log/auth/app.log"
+      }
+    },
+    {
+      "timestamp": "2026-02-10T15:14:22Z",
+      "service": "auth-service",
+      "level": "ERROR",
+      "signature": "AUTH_FAILED",
+      "message": "Authentication failed for user_id=user-44444 - invalid API key",
+      "metadata": {
+        "host": "prod-auth-01",
+        "file": "/var/log/auth/app.log"
+      }
+    }
+  ]
+}

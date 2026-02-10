@@ -1,0 +1,13 @@
+{
+  "name": "live-log-insight-docs",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "mint dev",
+    "build": "mint build",
+    "preview": "mint preview"
+  },
+  "dependencies": {
+    "mint": "^1.0.0"
+  }
+}

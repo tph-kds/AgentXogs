@@ -1,0 +1,159 @@
+---
+title: "Understanding Skills"
+description: "Learn about the Agent Skills format and how skills work."
+---
+
+# Understanding Skills
+
+Skills are modular, reusable units of work that can be discovered and executed by AI agents.
+
+## What is a Skill?
+
+A skill is a folder containing instructions, scripts, and resources that agents can use to perform specific tasks. Skills use **progressive disclosure** to manage context efficiently:
+
+1. **Discovery**: At startup, agents load only the name and description
+2. **Activation**: When relevant, the full instructions are loaded
+3. **Execution**: The agent follows instructions and optionally runs scripts
+
+## Skill Structure
+
+```
+skill-name/
+├── SKILL.md              # Required: Instructions + metadata
+├── scripts/              # Optional: Executable code
+│   └── run.py           # Execution script
+├── references/           # Optional: Additional documentation
+│   ├── REFERENCE.md
+│   └── OUTPUT_FORMS.md
+├── config/              # Optional: Configuration files
+│   └── settings.yaml
+└── assets/              # Optional: Templates, resources
+    └── templates/
+```
+
+## SKILL.md Format
+
+Every skill must have a `SKILL.md` file with YAML frontmatter:
+
+```yaml
+---
+name: skill-name
+description: Brief description of what this skill does.
+license: Apache-2.0
+metadata:
+  author: your-name
+  version: "1.0"
+  category: observability
+  tags: [logs, monitoring]
+---
+
+# Skill Title
+
+## When to use
+
+Describe when this skill should be activated.
+
+## Instructions
+
+1. Step-by-step instructions
+2. How to perform the task
+3. What inputs are expected
+
+## Outputs
+
+Describe what the skill returns.
+```
+
+## Key Fields
+
+| Field | Required | Description |
+|-------|---------|-------------|
+| `name` | Yes | Unique identifier (lowercase, hyphens) |
+| `description` | Yes | When to use this skill (1024 chars max) |
+| `license` | No | License for the skill |
+| `metadata` | No | Additional metadata (author, version, etc.) |
+| `compatibility` | No | Environment requirements |
+| `allowed-tools` | No | Pre-approved tools (experimental) |
+
+## Live Log Insight Skills
+
+### Core Skills (Required)
+
+| Skill | Purpose |
+|-------|---------|
+| `livelogs_insights` | Orchestrates the full pipeline |
+| `logsource_discovery` | Finds log sources |
+| `fetch_logs` | Retrieves raw logs |
+| `parse_logs` | Normalizes log formats |
+| `aggregate_logs` | Computes metrics |
+| `detect_anomalies` | Identifies issues |
+| `generate_summary` | Creates reports |
+| `recommend_actions` | Suggests actions |
+
+### Advanced Skills (Optional)
+
+| Skill | Purpose |
+|-------|---------|
+| `high_hypothesis` | Root cause analysis |
+
+## How Agents Use Skills
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                    Agent Skill Execution Flow                      │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│  1. Discovery: Agent loads skill metadata (name + description)  │
+│                                                                 │
+│  2. Matching: Agent determines which skills are relevant         │
+│                                                                 │
+│  3. Activation: Agent loads full SKILL.md instructions          │
+│                                                                 │
+│  4. Execution: Agent follows instructions, runs scripts         │
+│                                                                 │
+│  5. Output: Results passed to next skill or user                │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+## Best Practices
+
+### Writing Instructions
+
+- Use clear, step-by-step instructions
+- Include examples of inputs and outputs
+- Document edge cases and error handling
+- Keep the main SKILL.md under 5000 tokens
+
+### Organizing Resources
+
+- Use `scripts/` for executable code
+- Use `references/` for detailed documentation
+- Use `assets/` for templates and static resources
+- Keep file references one level deep
+
+### Metadata
+
+- Use descriptive names (lowercase, hyphens)
+- Write detailed descriptions with keywords
+- Include relevant tags for discovery
+- Version your skills
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card
+    title="Skills Reference"
+    icon="cubes"
+    href="/skills/livelogs-insights"
+  >
+    Explore all available skills.
+  </Card>
+  <Card
+    title="Pipeline Flow"
+    icon="arrow-right"
+    href="/concepts/pipeline"
+  >
+    See how skills work together.
+  </Card>
+</CardGroup>

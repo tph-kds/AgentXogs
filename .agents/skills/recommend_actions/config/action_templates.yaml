@@ -1,0 +1,68 @@
+# Action Templates for Recommendations
+# Predefined remediation steps based on anomaly types
+
+templates:
+  ERROR_RATE_SPIKE:
+    investigation:
+      - name: "Review recent deployments"
+        description: "Check if a recent deployment correlates with the error spike"
+        estimated_time: "15 minutes"
+        priority: high
+      - name: "Analyze error stack traces"
+        description: "Examine the full error messages for root cause indicators"
+        estimated_time: "20 minutes"
+        priority: high
+      - name: "Check upstream dependencies"
+        description: "Verify health of upstream services"
+        estimated_time: "10 minutes"
+        priority: medium
+      - name: "Review database metrics"
+        description: "Check for database performance issues"
+        estimated_time: "15 minutes"
+        priority: medium
+    monitoring:
+      - name: "Enable real-time alerts"
+        description: "Set up alerts for error rate thresholds"
+        estimated_time: "10 minutes"
+        priority: medium
+    remediation:
+      - name: "Rollback recent change"
+        description: "If deployment-related, consider rollback"
+        estimated_time: "30 minutes"
+        priority: high
+
+  NEW_ERROR_SIGNATURE:
+    investigation:
+      - name: "Search code history"
+        description: "Check recent code changes for related fixes"
+        estimated_time: "10 minutes"
+        priority: high
+      - name: "Review error context"
+        description: "Examine full error message and stack trace"
+        estimated_time: "15 minutes"
+        priority: high
+    alerting:
+      - name: "Create alert rule"
+        description: "Set up alert for this new error signature"
+        estimated_time: "10 minutes"
+        priority: medium
+
+  LATENCY_SPIKE:
+    investigation:
+      - name: "Check database queries"
+        description: "Review slow query logs"
+        estimated_time: "20 minutes"
+        priority: high
+      - name: "Review resource utilization"
+        description: "Check CPU, memory, network"
+        estimated_time: "10 minutes"
+        priority: medium
+    optimization:
+      - name: "Implement caching"
+        description: "Add caching layer for slow queries"
+        estimated_time: "2 hours"
+        priority: low
+      - name: "Scale horizontally"
+        description: "Add more service instances"
+        estimated_time: "1 hour"
+        priority: medium

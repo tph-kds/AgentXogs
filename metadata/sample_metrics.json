@@ -1,0 +1,70 @@
+{
+  "description": "Sample aggregated metrics for testing anomaly detection and summary generation",
+  "time_range": "1h",
+  "metrics": {
+    "total_events": 15,
+    "error_count": 9,
+    "error_rate": 0.6,
+    "warn_count": 2,
+    "info_count": 4,
+    "unique_users": 9,
+    "unique_hosts": 2
+  },
+  "top_signatures": [
+    {
+      "signature": "DB_TIMEOUT",
+      "count": 3,
+      "percentage": 33.3,
+      "description": "Database connection timeout errors"
+    },
+    {
+      "signature": "AUTH_FAILED",
+      "count": 3,
+      "percentage": 33.3,
+      "description": "Authentication failures (invalid credentials, expired token, invalid API key)"
+    },
+    {
+      "signature": "RATE_LIMIT",
+      "count": 2,
+      "percentage": 22.2,
+      "description": "API rate limit exceeded errors"
+    },
+    {
+      "signature": "OOM",
+      "count": 1,
+      "percentage": 11.1,
+      "description": "Out of memory errors"
+    }
+  ],
+  "hosts": {
+    "prod-auth-01": {
+      "events": 9,
+      "errors": 6,
+      "error_rate": 0.67
+    },
+    "prod-auth-02": {
+      "events": 6,
+      "errors": 3,
+      "error_rate": 0.5
+    }
+  },
+  "hourly_breakdown": {
+    "15:00-16:00": {
+      "events": 15,
+      "errors": 9,
+      "error_rate": 0.6
+    }
+  },
+  "endpoints_affected": [
+    "/api/v1/payment",
+    "/api/v1/users",
+    "/api/v1/orders"
+  ],
+  "baseline_comparison": {
+    "baseline_error_rate": 0.009,
+    "current_error_rate": 0.6,
+    "error_rate_multiplier": 66.7,
+    "significant_spike": true,
+    "severity": "high"
+  }
+}

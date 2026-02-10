@@ -1,0 +1,100 @@
+---
+title: "Custom Pipeline"
+description: "Example: Building a custom pipeline with specific skills."
+---
+
+# Custom Pipeline Example
+
+This example demonstrates how to build a custom pipeline using only specific skills.
+
+## Scenario
+
+You only want to run the anomaly detection and summary generation on existing metrics data.
+
+## Custom Pipeline Script
+
+Create a custom Python script:
+
+```python
+#!/usr/bin/env python3
+"""
+Custom pipeline: Analyze existing metrics without full pipeline.
+"""
+
+import json
+from pathlib import Path
+
+def load_metrics():
+    """Load pre-computed metrics."""
+    with open("output/metrics.json") as f:
+        return json.load(f)
+
+def detect_anomalies(metrics):
+    """Run anomaly detection on existing metrics."""
+    # This would call the detect_anomalies skill
+    pass
+
+def generate_report(metrics, anomalies):
+    """Generate a summary report."""
+    # This would call the generate_summary skill
+    pass
+
+def main():
+    # Load existing metrics
+    metrics = load_metrics()
+    
+    # Detect anomalies
+    anomalies = detect_anomalies(metrics)
+    
+    # Generate report
+    generate_report(metrics, anomalies)
+    
+    print("Custom pipeline complete!")
+
+if __name__ == "__main__":
+    main()
+```
+
+## Running Specific Skills
+
+You can also run individual skills:
+
+```bash
+# Skip discovery and fetch, start with parse
+uv run .agents/skills/parse_logs/scripts/run.py \
+  --input metadata/sample_logs.json
+
+# Skip discovery, fetch, parse - start with aggregate
+uv run .agents/skills/aggregate_logs/scripts/run.py \
+  --input metadata/sample_parsed_events.json \
+  --baseline config/baseline_metrics.json
+
+# Only detect anomalies on existing metrics
+uv run .agents/skills/detect_anomalies/scripts/run.py \
+  --metrics output/metrics.json \
+  --thresholds config/anomaly_thresholds.yaml
+
+# Only generate summary
+uv run .agents/skills/generate_summary/scripts/run.py \
+  --metrics output/metrics.json \
+  --anomalies output/anomalies.json
+```
+
+## Skill Dependencies
+
+| Skill | Requires | Produces |
+|-------|----------|----------|
+| `logsource_discovery` | config/log_sources.yaml | sources |
+| `fetch_logs` | sources | logs |
+| `parse_logs` | logs, patterns | events |
+| `aggregate_logs` | events, baseline | metrics |
+| `detect_anomalies` | metrics, thresholds | anomalies |
+| `high_hypothesis` | anomalies, metrics | hypotheses |
+| `generate_summary` | metrics, anomalies, hypotheses | summary |
+| `recommend_actions` | anomalies, hypotheses | recommendations |
+
+## Related Skills
+
+- [Aggregate Logs](/skills/aggregate-logs)
+- [Detect Anomalies](/skills/detect-anomalies)
+- [Generate Summary](/skills/generate-summary)

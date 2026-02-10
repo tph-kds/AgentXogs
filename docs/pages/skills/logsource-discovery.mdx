@@ -1,0 +1,101 @@
+---
+title: "Log Source Discovery"
+description: "Identifies where system or application logs are stored and how they can be accessed."
+---
+
+# Log Source Discovery
+
+Identifies where logs are stored and how to access them across different environments and services.
+
+## Overview
+
+This skill discovers available log sources based on environment and service specifications. It reads configuration files and returns usable log source definitions.
+
+## When to Use
+
+Use this skill when:
+- User asks to analyze logs without specifying a source
+- Setting up a new analysis pipeline
+- Verifying log source configurations
+- Switching between environments (local/staging/production)
+
+## Directory Structure
+
+```
+logsource_discovery/
+├── SKILL.md
+└── scripts/
+    └── run.py
+```
+
+## Instructions
+
+1. **Read configuration**: Load `config/log_sources.yaml`
+
+2. **Parse input**: Extract environment, service name, and time range
+
+3. **Run discovery**: Execute the discovery script
+
+4. **Outputs**: Return discovered log sources
+
+5. **Pass to next skill**: Provide sources to `fetch_logs`
+
+6. **Handle missing sources**: Suggest checking config or default paths
+
+## Input
+
+```json
+{
+  "environment": "production",
+  "service_name": "auth-service",
+  "time_range": "24h"
+}
+```
+
+## Output
+
+```json
+{
+  "sources": [
+    {
+      "type": "elasticsearch",
+      "index": "auth-service-*",
+      "environment": "production",
+      "host": "es.example.com",
+      "port": 9200
+    }
+  ]
+}
+```
+
+## Supported Source Types
+
+| Type | Description | Configuration |
+|------|-------------|---------------|
+| `filesystem` | Local log files | `path` - directory location |
+| `elasticsearch` | Elasticsearch indices | `host`, `port`, `index` |
+| `custom` | Custom log sources | Extensible via plugins |
+
+## Configuration Example
+
+```yaml
+# src/agentX/config/log_sources.yaml
+sources:
+  - type: filesystem
+    path: /var/log
+    name: app-logs
+    environments: [local, staging, production]
+    services: [all]
+    
+  - type: elasticsearch
+    name: production-logs
+    host: es.example.com
+    port: 9200
+    index: "auth-service-*"
+    environments: [production]
+    services: [auth-service]
+```
+
+## Related Skills
+
+- [Fetch Logs](/skills/fetch-logs) - Retrieves logs from discovered sources

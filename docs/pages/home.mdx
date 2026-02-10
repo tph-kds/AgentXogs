@@ -1,0 +1,159 @@
+---
+title: "Overview"
+description: "Live Log Insight – An intelligent agent system for automated log analysis, anomaly detection, and actionable insights generation."
+---
+
+import { LogoCarousel } from '/snippets/LogoCarousel.jsx';
+
+# Live Log Insight
+
+An intelligent agent skills system that analyzes logs, detects anomalies, and produces actionable insights — using composable skills, not monolithic prompts.
+
+## What is Live Log Insight?
+
+Live Log Insight is a modular Agent Skills system designed for automated log analysis. It orchestrates specialized skills to transform raw logs into meaningful insights for operators and developers. Unlike traditional monitoring tools, it uses an AI-powered pipeline that can understand context, detect anomalies, and suggest actions.
+
+## Key Features
+
+- **🔍 Automated Discovery**: Automatically identifies log sources across environments
+- **📊 Intelligent Parsing**: Normalizes diverse log formats into structured events
+- **📈 Pattern Recognition**: Aggregates logs to identify trends and metrics
+- **🚨 Anomaly Detection**: Detects spikes, new errors, and unusual behavior
+- **💡 Root Cause Analysis**: Generates plausible hypotheses for detected issues
+- **📝 Actionable Summaries**: Produces clear, human-readable reports
+- **✅ Smart Recommendations**: Suggests concrete next steps for operators
+
+## Architecture
+
+The system follows a sequential pipeline workflow:
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                    Live Log Insight Pipeline                     │
+├─────────────────────────────────────────────────────────────────┤
+│  1. Discovery → 2. Fetch → 3. Parse → 4. Aggregate → 5. Detect  │
+│                                                                  │
+│  6. Hypothesize → 7. Summarize → 8. Recommend                    │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+Each stage is implemented as a modular skill, making the system flexible and extensible.
+
+## When to Use
+
+Activate Live Log Insight when:
+- User requests log analysis or system health insights
+- Daily/weekly operational summaries are needed
+- Investigating incidents, spikes, or unusual behavior
+- Monitoring production or staging systems
+- Troubleshooting application errors
+
+## Quick Example
+
+```bash
+# Run a complete log analysis pipeline
+uv run main.py --time-range 24h --environment production
+```
+
+This will:
+1. Discover available log sources
+2. Fetch logs from the past 24 hours
+3. Parse and normalize log entries
+4. Aggregate metrics and patterns
+5. Detect anomalies
+6. Generate hypotheses (optional)
+7. Create a summary report
+8. Recommend next steps
+
+## Supported Log Sources
+
+- **Filesystem**: `/var/log` and custom paths
+- **Elasticsearch**: Index-based log retrieval
+- **Custom sources**: Extensible via configuration
+
+## Output Formats
+
+| Output | Description | Location |
+|--------|-------------|----------|
+| `summary.md` | Human-readable analysis report | `output/summary.md` |
+| `anomalies.json` | Detected issues with evidence | `output/anomalies.json` |
+| `recommendations.json` | Prioritized action items | `output/recommendations.json` |
+| `metrics.json` | Aggregated statistics | `output/metrics.json` |
+| `hypotheses.json` | Root cause hypotheses | `output/hypotheses.json` |
+
+## Get Started
+
+<CardGroup cols={3}>
+  <Card
+    title="Quickstart"
+    icon="rocket"
+    href="/quickstart"
+  >
+    Get up and running in 5 minutes.
+  </Card>
+  <Card
+    title="Core Concepts"
+    icon="book"
+    href="/concepts/architecture"
+  >
+    Learn about the system architecture.
+  </Card>
+  <Card
+    title="Skills Reference"
+    icon="cubes"
+    href="/skills/livelogs-insights"
+  >
+    Explore all available skills.
+  </Card>
+  <Card
+    title="Examples"
+    icon="code"
+    href="/examples/daily-health-check"
+  >
+    See real-world usage examples.
+  </Card>
+  <Card
+    title="Configuration"
+    icon="sliders"
+    href="/configuration/log-sources"
+  >
+    Configure log sources and thresholds.
+  </Card>
+  <Card
+    title="API Reference"
+    icon="plug"
+    href="/api/pipeline"
+  >
+    Integrate with your own tools.
+  </Card>
+</CardGroup>
+
+## Project Structure
+
+```
+live-log-insight/
+├── .agents/
+│   ├── AGENTS.md              # Agent orchestration instructions
+│   └── skills/
+│       ├── livelogs_insights/     # Orchestration skill
+│       ├── logsource_discovery/   # Log source discovery
+│       ├── fetch_logs/            # Log retrieval
+│       ├── parse_logs/            # Log normalization
+│       ├── aggregate_logs/        # Metrics computation
+│       ├── detect_anomalies/      # Anomaly detection
+│       ├── high_hypothesis/       # Root cause analysis
+│       ├── generate_summary/      # Report generation
+│       └── recommend_actions/     # Action recommendations
+├── src/agentX/                  # Python source code
+│   ├── config/                  # Configuration modules
+│   ├── pipeline/                # Pipeline orchestration
+│   └── shared/                 # Shared utilities
+├── config/                      # Configuration files
+├── metadata/                    # Sample data for testing
+├── output/                      # Generated outputs
+└── docs/                        # Documentation
+```
+
+## License
+
+Apache-2.0

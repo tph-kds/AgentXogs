@@ -1,0 +1,118 @@
+---
+title: "Pipeline Flow"
+description: "Understanding how skills work together in the analysis pipeline."
+---
+
+# Pipeline Flow
+
+The Live Log Insight pipeline orchestrates a sequence of skills to transform raw logs into actionable insights.
+
+## Pipeline Stages
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│                         Pipeline Stages                                   │
+├─────────────────────────────────────────────────────────────────────────┤
+│                                                                         │
+│  Stage 1          Stage 2         Stage 3         Stage 4             │
+│  ┌──────────┐    ┌──────────┐    ┌──────────┐    ┌──────────┐          │
+│  │Discovery │───▶│  Fetch   │───▶│  Parse   │───▶│Aggregate │          │
+│  └──────────┘    └──────────┘    └──────────┘    └──────────┘          │
+│       │              │               │               │                  │
+│       ▼              ▼               ▼               ▼                  │
+│  Log sources    Raw logs       Events         Metrics                    │
+│                                                                         │
+│  ─────────────────────────────────────────────────────────────────────  │
+│                                                                         │
+│  Stage 5          Stage 6         Stage 7         Stage 8             │
+│  ┌──────────┐    ┌──────────┐    ┌──────────┐    ┌──────────┐          │
+│  │ Detect   │───▶│Hypothesize│───▶│ Summary │───▶│ Recommend│          │
+│  └──────────┘    └──────────┘    └──────────┘    └──────────┘          │
+│       │              │               │               │                  │
+│       ▼              ▼               ▼               ▼                  │
+│  Anomalies    Hypotheses     Summary      Actions                       │
+│                                                                         │
+└─────────────────────────────────────────────────────────────────────────┘
+```
+
+## Stage Details
+
+### Stage 1: Log Source Discovery
+
+**Purpose**: Identify where logs are stored
+
+**Input**: environment, service_name, time_range
+**Output**: sources array
+
+---
+
+### Stage 2: Log Fetching
+
+**Purpose**: Retrieve raw logs from sources
+
+**Input**: sources, time_range, severity_filter, max_logs
+**Output**: logs array
+
+---
+
+### Stage 3: Log Parsing
+
+**Purpose**: Normalize logs into structured events
+
+**Input**: logs, parsing_rules
+**Output**: events array
+
+---
+
+### Stage 4: Log Aggregation
+
+**Purpose**: Compute metrics from events
+
+**Input**: events, baseline_file, aggregation_window
+**Output**: metrics object
+
+---
+
+### Stage 5: Anomaly Detection
+
+**Purpose**: Identify abnormal patterns
+
+**Input**: metrics, thresholds
+**Output**: anomalies array
+
+---
+
+### Stage 6: Hypothesis Generation
+
+**Purpose**: Generate root cause hypotheses
+
+**Input**: anomalies, metrics, context
+**Output**: hypotheses array
+
+---
+
+### Stage 7: Summary Generation
+
+**Purpose**: Create human-readable report
+
+**Input**: metrics, anomalies, hypotheses
+**Output**: summary markdown
+
+---
+
+### Stage 8: Action Recommendations
+
+**Purpose**: Suggest remediation steps
+
+**Input**: anomalies, hypotheses
+**Output**: recommendations array
+
+## Data Flow
+
+Each stage passes data to the next:
+
+```
+Discovery → Fetch → Parse → Aggregate → Detect → Hypothesize → Summary → Recommend
+    ↓          ↓        ↓          ↓          ↓            ↓          ↓         ↓
+ Sources    Logs    Events    Metrics   Anomalies  Hypotheses   Summary   Actions
+```

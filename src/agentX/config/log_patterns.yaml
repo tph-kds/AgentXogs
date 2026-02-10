@@ -1,0 +1,146 @@
+# Log Parsing Patterns Configuration
+# Defines regex patterns for extracting fields from log messages
+
+patterns:
+  # Standard ISO format log
+  - name: iso_standard
+    regex: '(?P<timestamp>\d{4}-\d{2}-\d{2}[T\s]\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})?)\s+(?P<level>DEBUG|INFO|WARN|WARNING|ERROR|FATAL|CRITICAL)\s*:?\s+(?P<message>.*)'
+    priority: 10
+
+  # Simple level: message format
+  - name: simple
+    regex: '(?P<level>DEBUG|INFO|WARN|WARNING|ERROR|FATAL|CRITICAL)\s*:?\s+(?P<message>.*)'
+    priority: 5
+
+  # Nginx/Apache access log
+  - name: nginx_access
+    regex: '(?P<ip>\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})\s+-\s+-\s+\[(?P<timestamp>[^\]]+)\]\s+"(?P<method>\w+)\s+(?P<path>[^"]+)\s+[^"]*"\s+(?P<status>\d{3})\s+(?P<body_bytes>\d+)'
+    priority: 8
+
+  # Python traceback
+  - name: python_traceback
+    regex: '(?P<timestamp>\d{4}-\d{2}-\d{2}\s+\d{2}:\d{2}:\d{2})\s+(?P<level>ERROR|DEBUG|INFO)\s+(?P<message>Traceback \(most recent call last\):.*?)(?:\n\s+File.*){0,}'
+    priority: 15
+
+  # Java stack trace
+  - name: java_stacktrace
+    regex: '(?P<timestamp>\d{4}-\d{2}-\d{2}\s+\d{2}:\d{2}:\d{2})\s+(?P<level>ERROR|WARN|INFO)\s+\[(?P<thread>[^\]]+)\]\s+(?P<class>[^\s]+)\s+-\s+(?P<message>.*?(?=\n\s+at\s+|\n\s+Caused by:))'
+    priority: 12
+
+  # AWS CloudWatch
+  - name: cloudwatch
+    regex: '(?P<timestamp>\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z)\s+(?P<level>DEBUG|INFO|WARN|ERROR|FATAL)\s+(?P<message>.*)'
+    priority: 7
+
+  # Syslog
+  - name: syslog
+    regex: '(?P<timestamp>[A-Z][a-z]{2}\s+\d+\s+\d{2}:\d{2}:\d{2})\s+(?P<host>[^\s]+)\s+(?P<process>[^\s\[\]]+)(?:\[(?P<pid>\d+)\])?:\s+(?P<message>.*)'
+    priority: 6
+
+field_extractors:
+  # Extract error codes
+  error_code:
+    pattern: 'E\d{4}|err(?:or)?[_-]?\d{3,4}'
+    type: string
+
+  # Extract latency
+  latency_ms:
+    pattern: '(\d+)\s*ms'
+    type: integer
+
+  # Extract HTTP status
+  http_status:
+    pattern: '\b(\d{3})\b'
+    type: integer
+
+  # Extract IP addresses
+  ip_address:
+    pattern: '\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b'
+    type: string
+
+  # Extract user ID
+  user_id:
+    pattern: 'user[_-]?id[:\s=]+([a-zA-Z0-9-]+)'
+    type: string
+    group: 1
+
+  # Extract request ID
+  request_id:
+    pattern: 'request[_-]?id[:\s=]+([a-zA-Z0-9-]+)'
+    type: string
+    group: 1
+
+error_signatures:
+  TIMEOUT:
+    patterns:
+      - 'timeout'
+      - 'timed out'
+      - 'connection timeout'
+
+  CONNECTION_REFUSED:
+    patterns:
+      - 'connection refused'
+      - 'connection reset by peer'
+      - 'ECONNREFUSED'
+
+  DB_TIMEOUT:
+    patterns:
+      - 'database timeout'
+      - 'db connection timeout'
+      - 'sql timeout'
+
+  AUTH_FAILED:
+    patterns:
+      - 'authentication failed'
+      - 'auth failed'
+      - 'unauthorized'
+      - 'invalid credentials'
+
+  RATE_LIMIT:
+    patterns:
+      - 'rate limit'
+      - 'too many requests'
+      - '429'
+
+  OOM:
+    patterns:
+      - 'out of memory'
+      - 'oom'
+      - 'memory error'
+      - 'cannot allocate'
+
+  NULL_POINTER:
+    patterns:
+      - 'null pointer'
+      - 'nullpointerexception'
+      - 'npe'
+
+  VALIDATION_ERROR:
+    patterns:
+      - 'validation error'
+      - 'invalid input'
+      - 'bad request'
+      - '400'
+
+  FORBIDDEN:
+    patterns:
+      - 'forbidden'
+      - 'access denied'
+      - 'permission denied'
+      - '403'
+
+  NOT_FOUND:
+    patterns:
+      - 'not found'
+      - '404'
+      - 'missing resource'
+
+severity_mapping:
+  DEBUG: DEBUG
+  INFO: INFO
+  WARN: WARN
+  WARNING: WARN
+  ERROR: ERROR
+  FATAL: ERROR
+  CRITICAL: ERROR
+  TRACE: DEBUG

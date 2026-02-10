@@ -1,0 +1,54 @@
+# Live Log Insights - Anomaly Detection Thresholds
+# Configuration for sensitivity levels and detection rules
+
+detection:
+  error_rate_spike:
+    enabled: true
+    threshold: 2.0  # 2x baseline triggers alert
+    min_absolute_rate: 0.01  # At least 1% error rate
+    severity: high
+    cooldown_minutes: 30
+
+  error_count_spike:
+    enabled: true
+    threshold: 3.0  # 3x baseline
+    min_absolute_count: 10
+    severity: high
+    cooldown_minutes: 30
+
+  new_error_signature:
+    enabled: true
+    min_occurrences: 5
+    severity: medium
+    cooldown_minutes: 60
+
+  latency_spike:
+    enabled: true
+    threshold_ms: 3000
+    severity: medium
+    cooldown_minutes: 15
+
+  error_rate_drop:
+    enabled: false  # Often indicates missing logs, not improvement
+    threshold: 0.5  # Less than 50% of baseline
+    severity: low
+
+severity_levels:
+  high:
+    color: "🔴"
+    requires_immediate_attention: true
+    auto_escalate: true
+  medium:
+    color: "🟡"
+    requires_attention: true
+    auto_escalate: false
+  low:
+    color: "🟢"
+    informational: true
+    auto_escalate: false
+
+confidence_levels:
+  very_high: 0.90
+  high: 0.75
+  medium: 0.60
+  low: 0.40

@@ -1,0 +1,88 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "mint",
+  "name": "Live Log Insight",
+  "colors": {
+    "primary": "#6366f1",
+    "light": "#818cf8",
+    "dark": "#4f46e5"
+  },
+  "favicon": "/assets/favicon.svg",
+  "navbar": {
+    "primary": {
+      "type": "github",
+      "href": "https://github.com/tph-kds/AgentXogs"
+    }
+  },
+  "navigation": {
+    "groups": [
+      {
+        "group": "Getting Started",
+        "pages": [
+          "pages/home",
+          "pages/quickstart"
+        ]
+      },
+      {
+        "group": "Core Concepts",
+        "pages": [
+          "pages/concepts/architecture",
+          "pages/concepts/pipeline",
+          "pages/concepts/skills"
+        ]
+      },
+      {
+        "group": "Skills Reference",
+        "pages": [
+          "pages/skills/livelogs-insights",
+          "pages/skills/logsource-discovery",
+          "pages/skills/fetch-logs",
+          "pages/skills/parse-logs",
+          "pages/skills/aggregate-logs",
+          "pages/skills/detect-anomalies",
+          "pages/skills/high-hypothesis",
+          "pages/skills/generate-summary",
+          "pages/skills/recommend-actions"
+        ]
+      },
+      {
+        "group": "Examples",
+        "pages": [
+          "pages/examples/daily-health-check",
+          "pages/examples/incident-investigation",
+          "pages/examples/custom-pipeline"
+        ]
+      },
+      {
+        "group": "Configuration",
+        "pages": [
+          "pages/configuration/log-sources",
+          "pages/configuration/anomaly-thresholds",
+          "pages/configuration/baseline-metrics"
+        ]
+      },
+      {
+        "group": "API Reference",
+        "pages": [
+          "pages/api/pipeline",
+          "pages/api/outputs"
+        ]
+      }
+    ]
+  },
+  "contextual": {
+    "options": [
+      "copy",
+      "view",
+      "chatgpt",
+      "claude",
+      "perplexity",
+      "mcp",
+      "cursor",
+      "vscode"
+    ]
+  },
+  "footerSocials": {
+    "github": "https://github.com/tph-kds/AgentXogs"
+  }
+}

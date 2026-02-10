@@ -1,0 +1,7 @@
+# Log Sources Configuration
+# Defines where logs can be fetched from
+
+sources:
+  - type: filesystem
+    path: /var/log
+    name: app-logs

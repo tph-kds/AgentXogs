@@ -1,0 +1,11 @@
+{
+  "project": "agentx-logs",
+  "time_range": "24h",
+  "max_logs": 10000,
+  "environment": "production",
+  "log_sources_file": "src/agentX/config/log_sources.yaml",
+  "log_patterns_file": "src/agentX/config/log_patterns.yaml",
+  "baseline_metrics_file": "src/agentX/config/baseline_metrics.json",
+  "anomaly_thresholds_file": "src/agentX/config/anomaly_thresholds.yaml",
+  "output_dir": "output"
+}
