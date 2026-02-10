@@ -6,8 +6,5 @@
     "dev": "mint dev",
     "build": "mint build",
     "preview": "mint preview"
-  },
-  "dependencies": {
-    "mint": "^1.0.0"
   }
 }
