@@ -10,7 +10,7 @@ dependencies = [
     { name = "pyyaml" },
 ]
 
-[package.optional-dependencies]
+[package.dev-dependencies]
 dev = [
     { name = "black" },
     { name = "mypy" },
@@ -20,15 +20,16 @@ dev = [
 ]
 
 [package.metadata]
-requires-dist = [
-    { name = "black", marker = "extra == 'dev'", specifier = ">=23.0" },
-    { name = "mypy", marker = "extra == 'dev'", specifier = ">=1.0" },
-    { name = "pytest", marker = "extra == 'dev'", specifier = ">=7.0" },
-    { name = "pytest-asyncio", marker = "extra == 'dev'", specifier = ">=0.21" },
-    { name = "pyyaml", specifier = ">=6.0" },
-    { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.1" },
+requires-dist = [{ name = "pyyaml", specifier = ">=6.0" }]
+
+[package.metadata.requires-dev]
+dev = [
+    { name = "black", specifier = ">=23.0" },
+    { name = "mypy", specifier = ">=1.0" },
+    { name = "pytest", specifier = ">=7.0" },
+    { name = "pytest-asyncio", specifier = ">=0.21" },
+    { name = "ruff", specifier = ">=0.1" },
 ]
-provides-extras = ["dev"]
 
 [[package]]
 name = "backports-asyncio-runner"
