@@ -9,26 +9,21 @@ Live Log Insight is built on a modular, skill-based architecture that enables fl
 
 ## High-Level Overview
 
-```
-┌──────────────────────────────────────────────────────────────────────────┐
-│                          Live Log Insight System                           │
-├──────────────────────────────────────────────────────────────────────────┤
-│                                                                           │
-│  ┌─────────────┐    ┌─────────────┐    ┌─────────────┐                 │
-│  │   Input     │───▶│  Pipeline   │───▶│   Output     │                 │
-│  │  Config     │    │  Orchestrator│    │  Reports     │                 │
-│  └─────────────┘    └─────────────┘    └─────────────┘                 │
-│         │                  │                   │                          │
-│         │                  ▼                   ▼                          │
-│         │         ┌─────────────┐    ┌─────────────┐                   │
-│         │         │    Skills    │    │   Results   │                   │
-│         │         │   Registry   │    │   Storage    │                   │
-│         │         └─────────────┘    └─────────────┘                   │
-│         │                                                       │
-│         └───────────────────────────────────────────────────────┘
-│                               Config                                    │
-└──────────────────────────────────────────────────────────────────────────┘
-```
+<div className="flex justify-center items-center my-8">
+  <div className="max-w-4xl">
+    <img 
+      className="block dark:hidden workflow-image"
+      src="/assets/images/add_ins/high-level-system/high-level-system-light.png" 
+      alt="Live Log Insight High-Level System Architecture"
+    />
+    <img 
+      className="hidden dark:block workflow-image"
+      src="/assets/images/add_ins/high-level-system/high-level-system-dark.png" 
+      alt="Live Log Insight High-Level System Architecture"
+    />
+  </div>
+</div>
+
 
 ## Core Components
 
@@ -86,62 +81,27 @@ Common functionality used across skills:
 
 ## Data Flow
 
-```
-┌─────────────────────────────────────────────────────────────────────────┐
-│                              Data Flow                                   │
-├─────────────────────────────────────────────────────────────────────────┤
-│                                                                         │
-│  User Request                                                           │
-│       │                                                                 │
-│       ▼                                                                 │
-│  ┌─────────────────┐                                                    │
-│  │ Configuration   │                                                    │
-│  │ (config.json)   │                                                    │
-│  └────────┬────────┘                                                    │
-│           │                                                             │
-│           ▼                                                             │
-│  ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐     │
-│  │    Discovery    │───▶│     Fetch       │───▶│     Parse        │     │
-│  │ (SKILL.md)      │    │ (SKILL.md)      │    │ (SKILL.md)       │     │
-│  └────────┬────────┘    └────────┬────────┘    └────────┬────────┘     │
-│           │                      │                      │               │
-│           ▼                      ▼                      ▼               │
-│  ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐     │
-│  │  Source Config  │    │   Raw Logs      │    │   Events        │     │
-│  └─────────────────┘    └─────────────────┘    └────────┬────────┘     │
-│                                                          │               │
-│                                                          ▼               │
-│  ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐     │
-│  │    Aggregate    │───▶│    Detect       │───▶│   Hypothesize   │     │
-│  │ (SKILL.md)      │    │ (SKILL.md)      │    │ (SKILL.md)       │     │
-│  └────────┬────────┘    └────────┬────────┘    └────────┬────────┘     │
-│           │                      │                      │               │
-│           ▼                      ▼                      ▼               │
-│  ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐     │
-│  │   Metrics       │    │   Anomalies     │    │   Hypotheses   │     │
-│  └────────┬────────┘    └────────┬────────┘    └────────┬────────┘     │
-│           │                        │                        │               │
-│           └────────────────────────┼────────────────────────┘               │
-│                                    │                                        │
-│                                    ▼                                        │
-│  ┌─────────────────┐    ┌─────────────────┐                                 │
-│  │    Summary      │───▶│  Recommendations│                                 │
-│  │ (SKILL.md)      │    │ (SKILL.md)      │                                 │
-│  └────────┬────────┘    └────────┬────────┘                                 │
-│           │                        │                                         │
-│           ▼                        ▼                                         │
-│  ┌─────────────────┐    ┌─────────────────┐                                 │
-│  │ summary.md      │    │ recommendations│                                 │
-│  └─────────────────┘    └─────────────────┘                                 │
-│                                                                         │
-└─────────────────────────────────────────────────────────────────────────┘
-```
+<div className="flex justify-center items-center my-8">
+  <div className="max-w-4xl">
+    <img 
+      className="block dark:hidden workflow-image"
+      src="/assets/images/add_ins/data-flow/data-flow-light.png" 
+      alt="Live Log Insight Data Flow Diagram"
+    />
+    <img 
+      className="hidden dark:block workflow-image"
+      src="/assets/images/add_ins/data-flow/data-flow-dark.png" 
+      alt="Live Log Insight Data Flow Diagram"
+    />
+  </div>
+</div>
+
 
 ## Skill Structure
 
 Each skill follows a consistent structure:
 
-```
+```yaml
 skill-name/
 ├── SKILL.md              # Required: Instructions + metadata
 ├── scripts/
@@ -182,8 +142,6 @@ The skill returns structured data:
 {
   "result": "value"
 }
-```
-```
 
 ## Agent Integration
 

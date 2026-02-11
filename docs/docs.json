@@ -3,9 +3,14 @@
   "theme": "mint",
   "name": "Live Log Insight",
   "colors": {
-    "primary": "#6366f1",
-    "light": "#818cf8",
-    "dark": "#4f46e5"
+    "primary": "#06b6d4",
+    "light": "#22d3ee",
+    "dark": "#0891b2"
+  },
+  "logo": {
+    "light": "/assets/images/add_ins/logo/logo.png",
+    "dark": "/assets/images/add_ins/logo/logo.png",
+    "href": "/"
   },
   "favicon": "/assets/favicon.svg",
   "navbar": {
@@ -13,6 +18,10 @@
       "type": "github",
       "href": "https://github.com/tph-kds/AgentXogs"
     }
+  },
+  "banner" : {
+      "content": "🚀 New release: Live Log Insight v1.0 is now available! Check out the latest features and improvements in our documentation.",
+      "dismissible": true 
   },
   "navigation": {
     "groups": [
@@ -84,5 +93,23 @@
   },
   "footerSocials": {
     "github": "https://github.com/tph-kds/AgentXogs"
+  },
+  "footer": {
+    "type": "simple",
+    "content": "© 2026 Live Log Insight. All rights reserved."
+  },
+  "search": {
+    "prompt": "Search the Live Log Insight docs..."
+  },
+  "errors": {
+    "404": {
+      "redirect": false,
+      "title": "Page Not Found",
+      "description": "Sorry, the page you are looking for does not exist.",
+      "homeButton": {
+        "text": "Go to Home",
+        "href": "/"
+      }
+    }
   }
 }

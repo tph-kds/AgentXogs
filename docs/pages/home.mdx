@@ -9,6 +9,10 @@ import { LogoCarousel } from '/snippets/LogoCarousel.jsx';
 
 An intelligent agent skills system that analyzes logs, detects anomalies, and produces actionable insights — using composable skills, not monolithic prompts.
 
+## Powered By
+
+<LogoCarousel />
+
 ## What is Live Log Insight?
 
 Live Log Insight is a modular Agent Skills system designed for automated log analysis. It orchestrates specialized skills to transform raw logs into meaningful insights for operators and developers. Unlike traditional monitoring tools, it uses an AI-powered pipeline that can understand context, detect anomalies, and suggest actions.
@@ -27,15 +31,21 @@ Live Log Insight is a modular Agent Skills system designed for automated log ana
 
 The system follows a sequential pipeline workflow:
 
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                    Live Log Insight Pipeline                     │
-├─────────────────────────────────────────────────────────────────┤
-│  1. Discovery → 2. Fetch → 3. Parse → 4. Aggregate → 5. Detect  │
-│                                                                  │
-│  6. Hypothesize → 7. Summarize → 8. Recommend                    │
-└─────────────────────────────────────────────────────────────────┘
-```
+
+<div className="flex justify-center items-center my-8">
+  <div className="max-w-4xl">
+    <img 
+      className="block dark:hidden workflow-image"
+      src="/assets/images/add_ins/workflow/workflow-light.png" 
+      alt="Live Log Insight Workflow"
+    />
+    <img 
+      className="hidden dark:block workflow-image"
+      src="/assets/images/add_ins/workflow/workflow-dark.png" 
+      alt="Live Log Insight Workflow"
+    />
+  </div>
+</div>
 
 Each stage is implemented as a modular skill, making the system flexible and extensible.
 

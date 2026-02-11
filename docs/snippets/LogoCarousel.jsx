@@ -1,12 +1,14 @@
 {/*
   LogoCarousel component for the Agent Skills documentation.
-  Shuffles logos on each page load for fair exposure.
+  Shows logos in two scrolling rows for fair exposure.
 
   To add a new logo:
   1. Add logo files to /images/logos/[logo-name]/
   2. Add entry to the logos array below
 */}
+
 export const LogoCarousel = () => {
+  // Fixed order - no shuffling to avoid SSR hydration mismatch
   const logos = [
     { name: "Gemini CLI", url: "https://geminicli.com", lightSrc: "/assets/images/logos/gemini-cli/gemini-cli-logo_light.svg", darkSrc: "/assets/images/logos/gemini-cli/gemini-cli-logo_dark.svg" },
     { name: "Autohand Code CLI", url: "https://autohand.ai/", lightSrc: "/assets/images/logos/autohand/autohand-light.svg", darkSrc: "/assets/images/logos/autohand/autohand-dark.svg", width: "120px" },
@@ -35,25 +37,12 @@ export const LogoCarousel = () => {
     { name: "Ona", url: "https://ona.com", lightSrc: "/assets/images/logos/ona/ona-wordmark-light.svg", darkSrc: "/assets/images/logos/ona/ona-wordmark-dark.svg", width: "120px" },
     { name: "VT Code", url: "https://github.com/vinhnx/vtcode", lightSrc: "/assets/images/logos/vtcode/vt_code_light.svg", darkSrc: "/assets/images/logos/vtcode/vt_code_dark.svg" },
     { name: "Qodo", url: "https://www.qodo.ai/", lightSrc: "/assets/images/logos/qodo/qodo-logo-light.png", darkSrc: "/assets/images/logos/qodo/qodo-logo-dark.svg" },
+    { name: "Live Log Insight", url: "#", lightSrc: "/assets/images/add_ins/logo/logo.png", darkSrc: "/assets/images/add_ins/logo/logo.png", width: "120px" },
   ];
 
-  /* Shuffle logos on component mount */
-  const [shuffled, setShuffled] = useState(logos);
-
-  useEffect(() => {
-    const shuffle = (items) => {
-      const copy = [...items];
-      for (let i = copy.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [copy[i], copy[j]] = [copy[j], copy[i]];
-      }
-      return copy;
-    };
-    setShuffled(shuffle(logos));
-  }, []);
-
-  const row1 = shuffled.filter((_, i) => i % 2 === 0);
-  const row2 = shuffled.filter((_, i) => i % 2 === 1);
+  // Split into two rows - fixed order, no shuffling
+  const row1 = logos.filter((_, i) => i % 2 === 0);
+  const row2 = logos.filter((_, i) => i % 2 === 1);
   const row1Doubled = [...row1, ...row1];
   const row2Doubled = [...row2, ...row2];
 
