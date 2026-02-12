@@ -183,6 +183,7 @@ pyrightconfig.json
 !**/METADATA.md
 !**/.agent*/*
 output/*
-.github/workflows/docs*.*
-
+storage/*
+logs/*
+src/**/test_*.py
 
