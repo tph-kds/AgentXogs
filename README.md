@@ -1,7 +1,7 @@
 # AgentXogs - Live Log Insight Agent Skills System
 
 <p align="center">
-  <img src="docs/assets/logo.svg" alt="AgentX Logo" width="200"/>
+  <img src="docs/assets/images/add_ins/logo/logo.png" alt="Live Log Insight Logo" width="500"/>
 </p>
 
 <p align="center">
