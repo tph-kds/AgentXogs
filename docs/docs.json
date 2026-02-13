@@ -52,13 +52,13 @@
     }
   },
   "banner": {
-    "content": "🚀 New release: Live Log Insight v1.0 is now available! Check out the latest features and improvements in our documentation.",
+    "content": "🚀 New release: Live Log Insight v2.0 for CLI docs is now available! Check out the latest features and improvements in our documentation.",
     "dismissible": true
   },
   "navigation": {
     "versions": [
       {
-        "version": "1.0.0:Non-CLI",
+        "version": "1.0:Non-CLI",
         "groups": [
           {
             "group": "Getting Started",
@@ -115,7 +115,7 @@
         ]
       },
       {
-        "version": "2.0.0:CLI",
+        "version": "2.0:CLI",
         "groups": [
           {
             "group": "Getting Started",
