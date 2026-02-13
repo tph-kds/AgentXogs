@@ -15,7 +15,23 @@
   "redirects": [
     {
       "source": "/",
-      "destination": "/v1/pages/home"
+      "destination": "/-/v1/pages/home"
+    },
+    {
+      "source": "/pages",
+      "destination": "/-/v1/pages/home"
+    },
+    {
+      "source": "/pages/home",
+      "destination": "/-/v1/pages/home"
+    },
+    {
+      "source": "/v1/pages/home",
+      "destination": "/-/v1/pages/home"
+    },
+    {
+      "source": "/agentXogs-docs",
+      "destination": "/-/v1/pages/home"
     }
   ],
   "colors": {
