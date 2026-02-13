@@ -1,0 +1,364 @@
+---
+title: "CLI Reference"
+description: "Complete reference for the AgentXogs Command Line Interface."
+---
+
+# CLI Reference
+
+The AgentXogs CLI provides an interactive command-line interface for log analysis with rich animations, prompts, and visualizations.
+
+## Overview
+
+The CLI is located at `src/agentX/cli/main.py` and can be run via `run_cli.py`. It supports both interactive mode with visual menus and direct command execution.
+
+```bash
+# Run CLI
+uv run run_cli.py
+
+# Show help
+uv run run_cli.py --help
+
+# Show version
+uv run run_cli.py --version
+```
+
+## Command-Line Options
+
+| Option | Alias | Description |
+|--------|-------|-------------|
+| `--version` | `-V` | Show version information |
+| `--interactive` | `-i` | Enter interactive mode (default) |
+| `--no-colors` | - | Disable colors in output |
+| `--config` | `-c` | Config file path (default: config.json) |
+
+## Commands
+
+### status
+
+Show system status and configuration overview.
+
+```bash
+uv run run_cli.py status
+```
+
+Displays:
+- Project name
+- Environment
+- Time range
+- Max logs setting
+
+---
+
+### analyze
+
+Run the complete log analysis pipeline.
+
+```bash
+# Default analysis
+uv run run_cli.py analyze
+
+# With custom parameters
+uv run run_cli.py analyze --time 24h --max-logs 10000 --environment production
+```
+
+**Options Alias | Default | Description |
+|--------|-------|---------|:**
+
+| Option |-------------|
+| `--time` | `-t` | `24h` | Time range (1h, 6h, 24h, 7d, 30d) |
+| `--max-logs` | `-m` | `10000` | Maximum number of logs to analyze |
+| `--environment` | `-e` | `production` | Target environment |
+
+The analyze command runs through the full pipeline:
+1. Discovering log sources
+2. Fetching logs
+3. Parsing logs
+4. Aggregating metrics
+5. Detecting anomalies
+6. Generating hypotheses
+7. Creating summary
+
+---
+
+### quickcheck
+
+Perform a quick health check on the system.
+
+```bash
+# General health check
+uv run run_cli.py quickcheck
+
+# Specific service check
+uv run run_cli.py quickcheck --service auth-service
+```
+
+**Options:**
+
+| Option | Alias | Description |
+|--------|-------|-------------|
+| `--service` | `-s` | Specific service to check |
+
+---
+
+### discover
+
+Discover available log sources in the system.
+
+```bash
+uv run run_cli.py discover
+```
+
+Scans common log locations:
+- `/var/log/`
+- Application logs
+- Nginx logs
+- PostgreSQL logs
+
+---
+
+### export
+
+Export analysis results to various formats.
+
+```bash
+# Default JSON export
+uv run run_cli.py export
+
+# Specify format
+uv run run_cli.py export --format json
+uv run run_cli.py export --format yaml
+uv run run_cli.py export --format markdown
+```
+
+**Options:**
+
+| Option | Alias | Default | Description |
+|--------|-------|---------|-------------|
+| `--format` | `-f` | `json` | Output format (json, yaml, markdown) |
+
+---
+
+### wizard
+
+Run an interactive analysis wizard that guides you through configuration.
+
+```bash
+uv run run_cli.py wizard
+```
+
+The wizard prompts for:
+1. **Environment Selection** - Choose production, staging, development, or local
+2. **Time Range** - Select analysis window (1h, 6h, 24h, 7d, 30d, or custom)
+3. **Service Selection** - Choose which services to analyze (multi-select)
+4. **Confirmation** - Review and confirm settings
+
+---
+
+### demo-prompts
+
+Demonstrate all available interactive prompt types.
+
+```bash
+uv run run_cli.py demo-prompts
+```
+
+Shows examples of:
+- Select prompts
+- Confirm prompts
+- Checkbox prompts
+- Text input with validation
+- Number input
+- Menu selection
+- Quick choice prompts
+- Yes/No prompts
+- Multi-select
+
+## Interactive Mode
+
+When running without a command, the CLI enters interactive mode with multiple interaction styles:
+
+```bash
+uv run run_cli.py
+```
+
+### Chat Mode
+
+Command-line chat interface where you type commands directly:
+
+```
+agentXogs @> status
+agentXogs @> analyze
+agentXogs @> help
+agentXogs @> quit
+```
+
+**Available Chat Commands:**
+
+| Command | Description |
+|---------|-------------|
+| `status` | Show system status |
+| `analyze` | Run log analysis |
+| `quickcheck` | Quick health check |
+| `discover` | Discover log sources |
+| `export` | Export results |
+| `wizard` | Run analysis wizard |
+| `demo` | Demo prompts |
+| `version` | Show version |
+| `help` | Show help message |
+| `quit` / `exit` / `q` | Exit interactive mode |
+
+### List Mode
+
+Visual menu navigation with arrow keys and descriptions:
+
+```
+◆ INTERACTIVE LIST MODE ◆
+Use arrows to navigate, Enter to select, ESC to quit
+
+◆ Select an action:
+   ● System Status              View project configuration and system overview
+   ◈ Log Analysis               Run comprehensive log analysis pipeline
+   ◆ Quick Health Check         Rapid system health verification
+   ◇ Log Source Discovery       Identify and catalog available log sources
+   ▸ Export Results             Export analysis results to various formats
+   ✦ Analysis Wizard            Interactive step-by-step analysis configuration
+   ◙ Demo Prompts               Explore all interactive prompt capabilities
+   ◆ Version Info               View version and system information
+   ✗ Return to Main Menu        Return to the main interaction mode selection
+```
+
+### Select Mode
+
+Categorized command selection organized by function:
+
+1. **Analysis** - Log analysis and insights
+2. **Discovery** - Log source exploration
+3. **Export** - Export and save results
+4. **Settings** - Configure preferences
+
+## UI Components
+
+The CLI provides rich visual components:
+
+### Live Pipeline Display
+
+Animated progress display showing pipeline execution:
+
+```
+◈ AgentXogs Log Analysis Pipeline ◈
+
+  ● Discovering log sources    [██████████] Done
+  ◈ Fetching logs             [████████░░] Done
+  ◆ Parsing logs              [██████░░░░] Done
+  ◇ Aggregating metrics       [██████████] Done
+  ● Detecting anomalies       [█████░░░░░] Done
+  ◈ Generating hypotheses     [████████░░] Done
+  ◆ Creating summary          [██████░░░░] Done
+```
+
+### Live Status Panel
+
+Real-time status updates:
+
+```
+┌─────────────────────────────────┐
+│ ◆ Health Check                  │
+├─────────────────────────────────┤
+│ Service:    auth-service        │
+│ Status:     ● Healthy          │
+│ Logs:       1,234 found        │
+│ Metrics:    All normal         │
+└─────────────────────────────────┘
+```
+
+### Gradient Output
+
+Colored text and panels using gradient palettes:
+
+- **Ocean** - Blue/teal themes
+- **Neon** - Bright, high-contrast
+- **Sunset** - Orange/purple gradients
+- **Cosmic** - Purple/pink themes
+- **Midnight** - Dark blue themes
+- **Fire** - Red/orange themes
+
+## Configuration
+
+### Config File
+
+The CLI loads configuration from `config.json`:
+
+```json
+{
+  "project": "agentx-logs",
+  "environment": "production",
+  "time_range": "24h",
+  "max_logs": 10000,
+  "log_sources_file": "src/agentX/config/log_sources.yaml",
+  "log_patterns_file": "src/agentX/config/log_patterns.yaml",
+  "baseline_metrics_file": "src/agentX/config/baseline_metrics.json",
+  "anomaly_thresholds_file": "src/agentX/config/anomaly_thresholds.yaml",
+  "output_dir": "output"
+}
+```
+
+### Custom Config
+
+```bash
+uv run run_cli.py --config custom-config.json status
+```
+
+## Troubleshooting
+
+### Display Issues
+
+If you experience display problems, try disabling colors:
+
+```bash
+uv run run_cli.py --no-colors status
+```
+
+### Interactive Mode Cancelled
+
+Press `ESC` to go back or cancel in interactive prompts. The CLI will return to the previous menu.
+
+### Navigation
+
+In interactive menus:
+- **↑/↓** - Navigate options
+- **Enter** - Select
+- **Space** - Toggle checkbox selection
+- **ESC** - Go back / Quit
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card
+    title="Pipeline Reference"
+    icon="arrow-right"
+    href="./concepts/pipeline"
+  >
+    Understand the analysis pipeline.
+  </Card>
+  <Card
+    title="Skills Overview"
+    icon="cubes"
+    href="./concepts/skills"
+  >
+    Explore available skills.
+  </Card>
+  <Card
+    title="Configuration"
+    icon="cog"
+    href="./configuration/log-sources"
+  >
+    Configure log sources.
+  </Card>
+  <Card
+    title="Examples"
+    icon="lightbulb"
+    href="./examples/incident-investigation"
+  >
+    See example workflows.
+  </Card>
+</CardGroup>

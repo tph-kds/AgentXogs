@@ -1,0 +1,104 @@
+---
+title: "Output Formats"
+description: "Detailed documentation of Live Log Insight output formats."
+---
+
+# Output Formats
+
+This page documents all output formats produced by Live Log Insight.
+
+## Output Files
+
+| File | Description | Format |
+|------|-------------|--------|
+| `summary.md` | Human-readable report | Markdown |
+| `anomalies.json` | Detected anomalies | JSON |
+| `recommendations.json` | Action recommendations | JSON |
+| `metrics.json` | Aggregated metrics | JSON |
+| `hypotheses.json` | Root cause hypotheses | JSON |
+
+## Anomalies JSON
+
+```json
+{
+  "anomalies": [
+    {
+      "id": "anom_001",
+      "type": "ERROR_SPIKE",
+      "service": "auth-service",
+      "severity": "high",
+      "confidence": 0.92,
+      "evidence": "Error rate increased 3.4x vs baseline",
+      "metrics": {
+        "current_value": 0.031,
+        "baseline_value": 0.009,
+        "change_factor": 3.4
+      },
+      "time_detected": "2026-02-10T14:32:00Z"
+    }
+  ],
+  "total_anomalies": 1,
+  "detection_time": "2026-02-10T14:35:00Z"
+}
+```
+
+## Recommendations JSON
+
+```json
+{
+  "recommendations": [
+    {
+      "id": "rec_001",
+      "priority": "high",
+      "category": "investigation",
+      "action": "Check deployment logs",
+      "rationale": "Deployment correlates with error spike",
+      "steps": ["kubectl logs -n prod deploy/auth-service"],
+      "estimated_time": "15 minutes"
+    }
+  ],
+  "total_recommendations": 1,
+  "priority_summary": {"high": 1, "medium": 0, "low": 0}
+}
+```
+
+## Metrics JSON
+
+```json
+{
+  "total_events": 12034,
+  "error_rate": 0.031,
+  "error_count": 373,
+  "top_signatures": [
+    {"signature": "DB_TIMEOUT", "count": 145, "percentage": 38.9}
+  ],
+  "service_stats": {
+    "auth-service": {
+      "total": 5234,
+      "errors": 123,
+      "error_rate": 0.024
+    }
+  },
+  "baseline_comparison": {
+    "error_rate_change": "+2.2%"
+  }
+}
+```
+
+## Summary Markdown
+
+```markdown
+# System Log Summary
+
+**Time Range**: Last 24 hours
+
+## Executive Summary
+⚠️ Anomalies detected requiring attention
+
+## Key Metrics
+- Total Events: 12,034
+- Error Rate: 3.1%
+
+## Detected Anomalies
+...
+```

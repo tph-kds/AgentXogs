@@ -1,0 +1,54 @@
+---
+title: "Baseline Metrics Configuration"
+description: "Configure baseline metrics for anomaly detection comparisons."
+---
+
+# Baseline Metrics Configuration
+
+This page documents how to configure baseline metrics for historical comparison.
+
+## Configuration File
+
+Baselines are defined in `config/baseline_metrics.json`.
+
+## Structure
+
+```json
+{
+  "generated_at": "2026-02-10T00:00:00Z",
+  "period": "7d",
+  "metrics": {
+    "error_rate": {
+      "mean": 0.009,
+      "std": 0.002,
+      "min": 0.005,
+      "max": 0.015
+    },
+    "volume": {
+      "mean": 10000,
+      "std": 2000,
+      "min": 5000,
+      "max": 15000
+    },
+    "latency_p95": {
+      "mean": 1200,
+      "std": 200,
+      "min": 800,
+      "max": 1800
+    }
+  },
+  "top_signatures": [
+    {"signature": "AUTH_FAILED", "mean_rate": 0.005},
+    {"signature": "RATE_LIMIT", "mean_rate": 0.002}
+  ]
+}
+```
+
+## Metrics Reference
+
+| Metric | Description |
+|--------|-------------|
+| `error_rate` | Historical error rate statistics |
+| `volume` | Log volume statistics |
+| `latency_p95` | 95th percentile latency |
+| `top_signatures` | Common error patterns |

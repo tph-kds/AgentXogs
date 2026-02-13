@@ -1,0 +1,92 @@
+---
+title: "Fetch Logs"
+description: "Retrieves raw logs from known log sources within a specified time window."
+---
+
+# Fetch Logs
+
+Retrieves raw logs from configured log sources without interpretation.
+
+## Overview
+
+This skill fetches raw log data from discovered sources. It handles connection to various log storage systems and returns unprocessed log entries for further analysis.
+
+## When to Use
+
+Use this skill when:
+- Raw logs are required for analysis
+- Time-bounded log retrieval is needed
+- Setting up the analysis pipeline
+- After log sources have been discovered
+
+## Directory Structure
+
+```
+fetch_logs/
+├── SKILL.md
+└── scripts/
+    └── run.py
+```
+
+## Instructions
+
+1. **Receive log sources**: Accept output from `logsource_discovery`
+
+2. **Validate inputs**: Ensure time range and source configs are complete
+
+3. **Run fetcher**: Execute the fetch script
+
+4. **Outputs**: Return raw logs in structured format
+
+5. **Pass to parser**: Provide raw logs to `parse_logs`
+
+6. **Handle errors**: Return empty result with error details
+
+## Input
+
+```json
+{
+  "sources": [
+    {
+      "type": "elasticsearch",
+      "host": "es.example.com",
+      "port": 9200,
+      "index": "auth-service-*"
+    }
+  ],
+  "time_range": "24h",
+  "severity_filter": "ERROR",
+  "max_logs": 10000
+}
+```
+
+## Output
+
+```json
+{
+  "logs": [
+    {
+      "timestamp": "2026-02-10T14:32:15Z",
+      "raw_message": "ERROR: Database connection timeout",
+      "source": "auth-service",
+      "metadata": {
+        "host": "prod-01",
+        "file": "/var/log/app.log"
+      }
+    }
+  ],
+  "total_fetched": 1234,
+  "time_range": "24h"
+}
+```
+
+## Example Request
+
+```bash
+uv run .agents/skills/fetch_logs/scripts/run.py --sources config.json --time-range 24h --max-logs 10000
+```
+
+## Related Skills
+
+- [Log Source Discovery](/skills/logsource-discovery) - Provides source configuration
+- [Parse Logs](/skills/parse-logs) - Processes fetched logs

@@ -1,0 +1,96 @@
+---
+title: "Log Sources Configuration"
+description: "Configure log sources for Live Log Insight."
+---
+
+# Log Sources Configuration
+
+This page documents how to configure log sources in Live Log Insight.
+
+## Configuration File
+
+Log sources are defined in `src/agentX/config/log_sources.yaml`.
+
+## Structure
+
+```yaml
+sources:
+  - type: filesystem
+    path: /var/log
+    name: app-logs
+    environments: [local, staging, production]
+    services: [all]
+    
+  - type: elasticsearch
+    name: production-logs
+    host: es.example.com
+    port: 9200
+    index: "auth-service-*"
+    environments: [production]
+    services: [auth-service]
+```
+
+## Source Types
+
+### Filesystem
+
+For local log files:
+
+```yaml
+- type: filesystem
+  path: /var/log/myapp
+  name: application-logs
+  pattern: "*.log"
+  recursive: false
+```
+
+| Field | Required | Description |
+|-------|----------|-------------|
+| `type` | Yes | Must be "filesystem" |
+| `path` | Yes | Directory path to log files |
+| `name` | Yes | Human-readable name |
+| `pattern` | No | File glob pattern |
+| `recursive` | No | Search subdirectories (default: false) |
+
+### Elasticsearch
+
+For Elasticsearch indices:
+
+```yaml
+- type: elasticsearch
+  host: es.example.com
+  port: 9200
+  index: "auth-service-*"
+  name: elasticsearch-logs
+  username: elastic
+  password: ${ES_PASSWORD}
+  ssl: true
+```
+
+| Field | Required | Description |
+|-------|----------|-------------|
+| `type` | Yes | Must be "elasticsearch" |
+| `host` | Yes | Elasticsearch host |
+| `port` | Yes | Elasticsearch port |
+| `index` | Yes | Index pattern |
+| `name` | Yes | Human-readable name |
+| `username` | No | Basic auth username |
+| `password` | No | Basic auth password (use env vars) |
+| `ssl` | No | Use HTTPS (default: true) |
+
+### Environment Filtering
+
+Filter sources by environment:
+
+```yaml
+sources:
+  - type: filesystem
+    path: /var/log/local
+    name: local-logs
+    environments: [local]
+    
+  - type: elasticsearch
+    host: es-prod.example.com
+    name: production-logs
+    environments: [production]
+```

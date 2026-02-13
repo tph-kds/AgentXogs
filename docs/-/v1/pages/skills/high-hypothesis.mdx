@@ -1,0 +1,127 @@
+---
+title: "High Hypothesis"
+description: "Generates plausible root cause hypotheses for detected anomalies based on evidence."
+---
+
+# High Hypothesis
+
+Generates plausible explanations for detected anomalies with confidence levels.
+
+## Overview
+
+This skill analyzes detected anomalies and generates hypotheses about potential root causes. It considers available evidence, deployment history, service dependencies, and other contextual factors to suggest possible explanations.
+
+## When to Use
+
+Use this skill when:
+- Anomalies are detected and need explanation
+- Investigating incidents with unclear causes
+- Adding context to reports
+- Supporting decision-making with possible scenarios
+
+## Directory Structure
+
+```
+high_hypothesis/
+├── SKILL.md
+└── scripts/
+    └── run.py
+```
+
+## Instructions
+
+1. **Receive anomalies**: Accept output from `detect_anomalies`
+
+2. **Load contextual data**: Read `config/deployment_history.json` and `config/service_dependencies.yaml`
+
+3. **Run hypothesis generator**: Execute analysis script
+
+4. **Outputs**: Return hypotheses with confidence and evidence
+
+5. **Save hypotheses**: Write to `output/hypotheses.json`
+
+6. **Pass to summary**: Provide hypotheses to `generate_summary`
+
+## Input
+
+```json
+{
+  "anomalies": [...],
+  "metrics": {...},
+  "context": {
+    "recent_deployments": [...],
+    "dependencies": [...]
+  }
+}
+```
+
+## Output
+
+```json
+{
+  "hypotheses": [
+    {
+      "id": "hyp_001",
+      "anomaly_id": "anom_001",
+      "hypothesis": "Recent deployment at 14:15 may correlate with increased DB_TIMEOUT errors",
+      "confidence": 0.75,
+      "evidence": [
+        "Deployment timestamp matches error spike start",
+        "Similar pattern observed in staging environment"
+      ],
+      "uncertainty_factors": [
+        "No direct code changes to database layer visible",
+        "Database metrics not available for correlation"
+      ],
+      "suggested_validation": [
+        "Check deployment logs for database migration",
+        "Review database connection pool configuration"
+      ]
+    },
+    {
+      "id": "hyp_002",
+      "anomaly_id": "anom_001",
+      "hypothesis": "Downstream database latency increase could affect auth-service",
+      "confidence": 0.60,
+      "evidence": [
+        "Auth-service depends on user-db",
+        "Timeout threshold is 3000ms"
+      ],
+      "uncertainty_factors": [
+        "Database metrics not directly available",
+        "No alerts from database monitoring"
+      ],
+      "suggested_validation": [
+        "Check database server metrics",
+        "Review database slow query logs"
+      ]
+    }
+  ],
+  "total_hypotheses": 2,
+  "confidence_note": "These are plausible explanations, not confirmed root causes"
+}
+```
+
+## Hypothesis Structure
+
+| Field | Description |
+|-------|-------------|
+| `id` | Unique hypothesis identifier |
+| `anomaly_id` | Link to related anomaly |
+| `hypothesis` | Description of possible cause |
+| `confidence` | Confidence level (0-1) |
+| `evidence` | Supporting evidence |
+| `uncertainty_factors` | Factors that reduce confidence |
+| `suggested_validation` | Steps to validate hypothesis |
+
+## Important Notes
+
+- Always mark hypotheses as possibilities, not facts
+- Include uncertainty factors
+- Provide validation steps
+- Never hallucinate root causes
+
+## Related Skills
+
+- [Detect Anomalies](/skills/detect-anomalies) - Provides anomalies
+- [Generate Summary](/skills/generate-summary) - Includes hypotheses in reports

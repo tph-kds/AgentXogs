@@ -1,0 +1,113 @@
+---
+title: "Detect Anomalies"
+description: "Detects abnormal patterns in log metrics compared to historical baselines."
+---
+
+# Detect Anomalies
+
+Identifies abnormal patterns, spikes, and unusual behavior in log metrics.
+
+## Overview
+
+This skill analyzes aggregated metrics against historical baselines to detect anomalies. It identifies error spikes, new error signatures, latency changes, and other deviations from normal behavior.
+
+## When to Use
+
+Use this skill when:
+- Monitoring system health
+- Investigating incidents
+- Setting up alerting rules
+- Analyzing performance issues
+
+## Directory Structure
+
+```
+detect_anomalies/
+├── SKILL.md
+└── scripts/
+    └── run.py
+```
+
+## Instructions
+
+1. **Receive aggregated metrics**: Accept output from `aggregate_logs`
+
+2. **Load detection rules**: Read `config/anomaly_thresholds.yaml`
+
+3. **Run detector**: Execute anomaly detection script
+
+4. **Outputs**: Return detected anomalies with evidence
+
+5. **Save anomalies**: Write to `output/anomalies.json`
+
+6. **Pass to next skill**: Provide anomalies to `high_hypothesis` or `generate_summary`
+
+## Input
+
+```json
+{
+  "metrics": {...},
+  "thresholds": "config/anomaly_thresholds.yaml",
+  "baseline": {...}
+}
+```
+
+## Output
+
+```json
+{
+  "anomalies": [
+    {
+      "id": "anom_001",
+      "type": "ERROR_SPIKE",
+      "service": "auth-service",
+      "severity": "high",
+      "confidence": 0.92,
+      "evidence": "Error rate increased 3.4x vs baseline (0.9% → 3.1%)",
+      "metrics": {
+        "current_value": 0.031,
+        "baseline_value": 0.009,
+        "change_factor": 3.4
+      },
+      "time_detected": "2026-02-10T14:32:00Z"
+    },
+    {
+      "id": "anom_002",
+      "type": "NEW_ERROR_SIGNATURE",
+      "service": "auth-service",
+      "severity": "medium",
+      "confidence": 0.85,
+      "evidence": "New error signature 'DB_TIMEOUT' appeared (145 occurrences)",
+      "metrics": {
+        "signature": "DB_TIMEOUT",
+        "count": 145,
+        "first_seen": "2026-02-10T14:15:00Z"
+      }
+    }
+  ],
+  "total_anomalies": 2,
+  "detection_time": "2026-02-10T14:35:00Z"
+}
+```
+
+## Anomaly Types
+
+| Type | Description | Severity |
+|------|-------------|----------|
+| `ERROR_SPIKE` | Sudden increase in error rate | high |
+| `NEW_ERROR_SIGNATURE` | New error pattern detected | medium |
+| `LATENCY_SPIKE` | Response time increase | medium |
+| `VOLUME_CHANGE` | Unusual log volume change | low |
+| `ERROR_RATE_DROP` | Unusual absence of errors | low |
+
+## Confidence Levels
+
+- **High (0.8-1.0)**: Strong evidence, clear deviation
+- **Medium (0.5-0.8)**: Moderate evidence, worth investigation
+- **Low (0.2-0.5)**: Weak evidence, possible false positive
+
+## Related Skills
+
+- [Aggregate Logs](/skills/aggregate-logs) - Provides metrics
+- [High Hypothesis](/skills/high-hypothesis) - Explains anomalies
+- [Generate Summary](/skills/generate-summary) - Reports anomalies

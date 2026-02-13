@@ -1,0 +1,81 @@
+---
+title: "Pipeline API"
+description: "Programmatic access to the Live Log Insight pipeline."
+---
+
+# Pipeline API
+
+Programmatic access to run Live Log Insight pipelines.
+
+## Python API
+
+### Basic Usage
+
+```python
+from src.agentX.pipeline import run_pipeline
+
+# Run full pipeline
+result = run_pipeline(
+    time_range="24h",
+    environment="production",
+    service_name="auth-service"
+)
+
+# Access results
+print(result.summary)
+print(result.anomalies)
+print(result.recommendations)
+```
+
+### Advanced Usage
+
+```python
+from src.agentX.pipeline import Pipeline
+
+# Create custom pipeline
+pipeline = Pipeline(
+    config_path="config.json",
+    output_dir="output"
+)
+
+# Run specific stages
+pipeline.run_stages(["discover", "fetch", "parse", "aggregate"])
+
+# Access stage outputs
+metrics = pipeline.get_output("aggregate")
+```
+
+## CLI API
+
+### Command Line Interface
+
+```bash
+# Full pipeline
+uv run main.py --time-range 24h --environment production
+
+# With options
+uv run main.py \
+  --time-range 12h \
+  --environment staging \
+  --service-name payment-service \
+  --severity-filter ERROR \
+  --max-logs 5000
+```
+
+## Output API
+
+### Accessing Outputs
+
+```python
+from src.agentX.pipeline import PipelineOutput
+
+# Load outputs
+outputs = PipelineOutput.load("output/")
+
+# Access individual outputs
+summary = outputs.summary
+anomalies = outputs.anomalies
+metrics = outputs.metrics
+hypotheses = outputs.hypotheses
+recommendations = outputs.recommendations
+```

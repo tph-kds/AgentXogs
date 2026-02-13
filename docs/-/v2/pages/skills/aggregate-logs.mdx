@@ -1,0 +1,103 @@
+---
+title: "Aggregate Logs"
+description: "Aggregates normalized log events into metrics, patterns, and statistical summaries."
+---
+
+# Aggregate Logs
+
+Computes metrics, patterns, and trends from normalized log events.
+
+## Overview
+
+This skill transforms individual log events into aggregated statistics. It computes counts, rates, distributions, and trend summaries from parsed log events. These metrics are essential for anomaly detection and reporting.
+
+## When to Use
+
+Use this skill when:
+- Preparing data for anomaly detection
+- Generating reports or summaries
+- Analyzing system trends
+- Comparing current metrics to baselines
+
+## Directory Structure
+
+```
+aggregate_logs/
+├── SKILL.md
+├── scripts/
+│   └── run.py
+└── references/
+    ├── REFERENCE.md
+    └── OUTPUT_FORMS.md
+```
+
+## Instructions
+
+1. **Receive normalized events**: Accept output from `parse_logs`
+
+2. **Load baseline data**: Read `config/baseline_metrics.json` if available
+
+3. **Run aggregator**: Execute aggregation script
+
+4. **Outputs**: Return aggregated metrics
+
+5. **Save metrics**: Write to `output/metrics.json`
+
+6. **Pass to detector**: Provide metrics to `detect_anomalies`
+
+## Input
+
+```json
+{
+  "events": [...],
+  "baseline_file": "config/baseline_metrics.json",
+  "aggregation_window": "1h"
+}
+```
+
+## Output
+
+```json
+{
+  "total_events": 12034,
+  "time_range": "24h",
+  "error_rate": 0.031,
+  "error_count": 373,
+  "top_signatures": [
+    {"signature": "DB_TIMEOUT", "count": 145, "percentage": 38.9},
+    {"signature": "AUTH_FAILED", "count": 89, "percentage": 23.9}
+  ],
+  "service_stats": {
+    "auth-service": {
+      "total": 5234,
+      "errors": 123,
+      "error_rate": 0.024,
+      "p50_latency_ms": 145,
+      "p95_latency_ms": 3100,
+      "p99_latency_ms": 5200
+    }
+  },
+  "hourly_trends": [...],
+  "baseline_comparison": {
+    "error_rate_change": "+2.2%",
+    "volume_change": "-5.1%"
+  }
+}
+```
+
+## Computed Metrics
+
+| Metric | Description |
+|--------|-------------|
+| `total_events` | Total number of log events |
+| `error_count` | Number of error-level events |
+| `error_rate` | Percentage of errors (errors/total) |
+| `top_signatures` | Most frequent error signatures |
+| `service_stats` | Per-service statistics |
+| `hourly_trends` | Event distribution over time |
+| `baseline_comparison` | Comparison to historical data |
+
+## Related Skills
+
+- [Parse Logs](/skills/parse-logs) - Provides parsed events
+- [Detect Anomalies](/skills/detect-anomalies) - Uses aggregated metrics

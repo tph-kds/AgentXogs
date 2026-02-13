@@ -2,6 +2,22 @@
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
   "name": "Live Log Insight",
+  "versions": {
+    "v1": {
+      "path": "v1",
+      "title": "No CLI"
+    },
+    "v2": {
+      "path": "v2",
+      "title": "CLI"
+    }
+  },
+  "redirects": [
+    {
+      "source": "/",
+      "destination": "/v1/pages/home"
+    }
+  ],
   "colors": {
     "primary": "#06b6d4",
     "light": "#22d3ee",
@@ -19,62 +35,124 @@
       "href": "https://github.com/tph-kds/AgentXogs"
     }
   },
-  "banner" : {
-      "content": "🚀 New release: Live Log Insight v1.0 is now available! Check out the latest features and improvements in our documentation.",
-      "dismissible": true 
+  "banner": {
+    "content": "🚀 New release: Live Log Insight v1.0 is now available! Check out the latest features and improvements in our documentation.",
+    "dismissible": true
   },
   "navigation": {
-    "groups": [
+    "versions": [
       {
-        "group": "Getting Started",
-        "pages": [
-          "pages/home",
-          "pages/quickstart"
+        "version": "1.0.0:Non-CLI",
+        "groups": [
+          {
+            "group": "Getting Started",
+            "pages": [
+              "-/v1/pages/home",
+              "-/v1/pages/quickstart"
+            ]
+          },
+          {
+            "group": "Core Concepts",
+            "pages": [
+              "-/v1/pages/concepts/architecture",
+              "-/v1/pages/concepts/pipeline",
+              "-/v1/pages/concepts/skills"
+            ]
+          },
+          {
+            "group": "Skills Reference",
+            "pages": [
+              "-/v1/pages/skills/livelogs-insights",
+              "-/v1/pages/skills/logsource-discovery",
+              "-/v1/pages/skills/fetch-logs",
+              "-/v1/pages/skills/parse-logs",
+              "-/v1/pages/skills/aggregate-logs",
+              "-/v1/pages/skills/detect-anomalies",
+              "-/v1/pages/skills/high-hypothesis",
+              "-/v1/pages/skills/generate-summary",
+              "-/v1/pages/skills/recommend-actions"
+            ]
+          },
+          {
+            "group": "Examples",
+            "pages": [
+              "-/v1/pages/examples/daily-health-check",
+              "-/v1/pages/examples/incident-investigation",
+              "-/v1/pages/examples/custom-pipeline"
+            ]
+          },
+          {
+            "group": "Configuration",
+            "pages": [
+              "-/v1/pages/configuration/log-sources",
+              "-/v1/pages/configuration/anomaly-thresholds",
+              "-/v1/pages/configuration/baseline-metrics"
+            ]
+          },
+          {
+            "group": "API Reference",
+            "pages": [
+              "-/v1/pages/api/pipeline",
+              "-/v1/pages/api/outputs"
+            ]
+          }
         ]
       },
       {
-        "group": "Core Concepts",
-        "pages": [
-          "pages/concepts/architecture",
-          "pages/concepts/pipeline",
-          "pages/concepts/skills"
-        ]
-      },
-      {
-        "group": "Skills Reference",
-        "pages": [
-          "pages/skills/livelogs-insights",
-          "pages/skills/logsource-discovery",
-          "pages/skills/fetch-logs",
-          "pages/skills/parse-logs",
-          "pages/skills/aggregate-logs",
-          "pages/skills/detect-anomalies",
-          "pages/skills/high-hypothesis",
-          "pages/skills/generate-summary",
-          "pages/skills/recommend-actions"
-        ]
-      },
-      {
-        "group": "Examples",
-        "pages": [
-          "pages/examples/daily-health-check",
-          "pages/examples/incident-investigation",
-          "pages/examples/custom-pipeline"
-        ]
-      },
-      {
-        "group": "Configuration",
-        "pages": [
-          "pages/configuration/log-sources",
-          "pages/configuration/anomaly-thresholds",
-          "pages/configuration/baseline-metrics"
-        ]
-      },
-      {
-        "group": "API Reference",
-        "pages": [
-          "pages/api/pipeline",
-          "pages/api/outputs"
+        "version": "2.0.0:CLI",
+        "groups": [
+          {
+            "group": "Getting Started",
+            "pages": [
+              "-/v2/pages/home",
+              "-/v2/pages/quickstart"
+            ]
+          },
+          {
+            "group": "Core Concepts",
+            "pages": [
+              "-/v2/pages/concepts/architecture",
+              "-/v2/pages/concepts/pipeline",
+              "-/v2/pages/concepts/skills"
+            ]
+          },
+          {
+            "group": "Skills Reference",
+            "pages": [
+              "-/v2/pages/skills/livelogs-insights",
+              "-/v2/pages/skills/logsource-discovery",
+              "-/v2/pages/skills/fetch-logs",
+              "-/v2/pages/skills/parse-logs",
+              "-/v2/pages/skills/aggregate-logs",
+              "-/v2/pages/skills/detect-anomalies",
+              "-/v2/pages/skills/high-hypothesis",
+              "-/v2/pages/skills/generate-summary",
+              "-/v2/pages/skills/recommend-actions"
+            ]
+          },
+          {
+            "group": "Examples",
+            "pages": [
+              "-/v2/pages/examples/daily-health-check",
+              "-/v2/pages/examples/incident-investigation",
+              "-/v2/pages/examples/custom-pipeline"
+            ]
+          },
+          {
+            "group": "Configuration",
+            "pages": [
+              "-/v2/pages/configuration/log-sources",
+              "-/v2/pages/configuration/anomaly-thresholds",
+              "-/v2/pages/configuration/baseline-metrics"
+            ]
+          },
+          {
+            "group": "API Reference",
+            "pages": [
+              "-/v2/pages/api/pipeline",
+              "-/v2/pages/api/outputs"
+            ]
+          }
         ]
       }
     ]

@@ -1,0 +1,188 @@
+---
+title: "System Architecture"
+description: "Understanding the Live Log Insight system architecture and components."
+---
+
+# System Architecture
+
+Live Log Insight is built on a modular, skill-based architecture that enables flexible log analysis workflows.
+
+## High-Level Overview
+
+<div className="flex justify-center items-center my-8">
+  <div className="max-w-4xl">
+    <img 
+      className="block dark:hidden workflow-image"
+      src="/assets/images/add_ins/high-level-system/high-level-system-light.png" 
+      alt="Live Log Insight High-Level System Architecture"
+    />
+    <img 
+      className="hidden dark:block workflow-image"
+      src="/assets/images/add_ins/high-level-system/high-level-system-dark.png" 
+      alt="Live Log Insight High-Level System Architecture"
+    />
+  </div>
+</div>
+
+
+## Core Components
+
+### 1. Pipeline Orchestrator
+
+The central component that:
+- Loads configuration from `config.json`
+- Manages skill execution order
+- Handles data flow between skills
+- Manages error recovery
+
+**Location**: `src/agentX/pipeline/pipeline.py`
+
+### 2. Skills Registry
+
+A collection of specialized skills organized by function:
+
+| Skill | Purpose | Location |
+|-------|---------|----------|
+| `livelogs_insights` | Orchestrates end-to-end analysis | `.agents/skills/livelogs_insights/` |
+| `logsource_discovery` | Identifies log sources | `.agents/skills/logsource_discovery/` |
+| `fetch_logs` | Retrieves raw logs | `.agents/skills/fetch_logs/` |
+| `parse_logs` | Normalizes log formats | `.agents/skills/parse_logs/` |
+| `aggregate_logs` | Computes metrics | `.agents/skills/aggregate_logs/` |
+| `detect_anomalies` | Identifies issues | `.agents/skills/detect_anomalies/` |
+| `high_hypothesis` | Root cause analysis | `.agents/skills/high_hypothesis/` |
+| `generate_summary` | Creates reports | `.agents/skills/generate_summary/` |
+| `recommend_actions` | Suggests next steps | `.agents/skills/recommend_actions/` |
+
+### 3. Configuration System
+
+Hierarchical configuration management:
+
+```
+config/
+├── config.json                          # Main configuration
+├── log_sources.yaml                     # Log source definitions
+├── log_patterns.yaml                    # Parsing patterns
+├── anomaly_thresholds.yaml              # Detection settings
+└── baseline_metrics.json               # Historical data
+```
+
+### 4. Shared Utilities
+
+Common functionality used across skills:
+
+**Location**: `src/agentX/shared/`
+
+| Module | Purpose |
+|--------|---------|
+| `utils.py` | Common utility functions |
+| `log_schema.py` | Standard log format definitions |
+| `time_utils.py` | Time parsing and formatting |
+| `io_utils.py` | File I/O operations |
+
+## Data Flow
+
+<div className="flex justify-center items-center my-8">
+  <div className="max-w-4xl">
+    <img 
+      className="block dark:hidden workflow-image"
+      src="/assets/images/add_ins/data-flow/data-flow-light.png" 
+      alt="Live Log Insight Data Flow Diagram"
+    />
+    <img 
+      className="hidden dark:block workflow-image"
+      src="/assets/images/add_ins/data-flow/data-flow-dark.png" 
+      alt="Live Log Insight Data Flow Diagram"
+    />
+  </div>
+</div>
+
+
+## Skill Structure
+
+Each skill follows a consistent structure:
+
+```yaml
+skill-name/
+├── SKILL.md              # Required: Instructions + metadata
+├── scripts/
+│   └── run.py           # Required: Execution script
+├── references/           # Optional: Additional documentation
+│   ├── REFERENCE.md
+│   └── OUTPUT_FORMS.md
+├── config/              # Optional: Skill-specific config
+│   └── settings.yaml
+└── assets/              # Optional: Templates, resources
+    └── templates/
+```
+
+### SKILL.md Format
+
+```yaml
+---
+name: skill-name
+description: Brief description of what this skill does.
+license: Apache-2.0
+metadata:
+  author: your-name
+  version: "1.0"
+  category: observability
+  tags: [logs, monitoring]
+---
+
+## Instructions
+
+1. Step one
+2. Step two
+3. Step three
+
+## Outputs
+
+The skill returns structured data:
+```json
+{
+  "result": "value"
+}
+
+## Agent Integration
+
+The system uses Agent Skills format (`.agents/AGENTS.md`) for integration:
+
+```markdown
+# Live Log Insight Agent
+
+## Overview
+
+This agent analyzes system and application logs...
+
+## Workflow
+
+1. Log Source Discovery → Identify where logs live
+2. Log Fetching → Retrieve raw logs
+3. Log Parsing → Normalize into structured events
+...
+
+## Available Skills
+
+- `logsource_discovery` - Identify log storage locations
+- `fetch_logs` - Retrieve logs from sources
+- ...
+```
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card
+    title="Pipeline Flow"
+    icon="arrow-right"
+    href="/pages/concepts/pipeline"
+  >
+    Understand how skills work together.
+  </Card>
+  <Card
+    title="Skills Reference"
+    icon="cubes"
+    href="/pages/skills/livelogs-insights"
+  >
+    Explore individual skill details.
+  </Card>
+</CardGroup>

@@ -1,0 +1,118 @@
+---
+title: "Generate Summary"
+description: "Produces human-readable summaries of log behavior, anomalies, and system health."
+---
+
+# Generate Summary
+
+Creates comprehensive, human-readable reports of log analysis results.
+
+## Overview
+
+This skill transforms structured analysis results (metrics, anomalies, hypotheses) into clear, actionable summaries for operators and developers. It uses templates to ensure consistent formatting and includes all relevant findings.
+
+## When to Use
+
+Use this skill when:
+- Results need to be communicated to humans
+- Creating operational reports
+- Preparing incident summaries
+- Generating daily/weekly health reports
+
+## Directory Structure
+
+```
+generate_summary/
+├── SKILL.md
+├── scripts/
+│   └── run.py
+└── templates/
+    └── summary_template.md
+```
+
+## Instructions
+
+1. **Receive analysis results**: Accept outputs from `aggregate_logs`, `detect_anomalies`, and `high_hypothesis`
+
+2. **Load template**: Read `templates/summary_template.md`
+
+3. **Run summary generator**: Execute report generation script
+
+4. **Outputs**: Return Markdown summary
+
+5. **Save summary**: Write to `output/summary.md`
+
+6. **Pass to recommendations**: Provide context to `recommend_actions`
+
+## Input
+
+```json
+{
+  "metrics": {...},
+  "anomalies": [...],
+  "hypotheses": [...],
+  "time_range": "24h",
+  "environment": "production"
+}
+```
+
+## Output
+
+```markdown
+# System Log Summary – Production
+**Time Range**: Last 24 hours (2026-02-09 14:00 → 2026-02-10 14:00)
+**Generated**: 2026-02-10 14:35:00 UTC
+
+## Executive Summary
+⚠️ **2 anomalies detected** requiring attention
+- Error rate increased to 3.1% (+2.2% vs baseline)
+- New error signature DB_TIMEOUT appeared
+
+## Key Metrics
+- **Total Events**: 12,034
+- **Error Rate**: 3.1% (baseline: 0.9%)
+- **Most Affected Service**: auth-service (123 errors)
+
+## Detected Anomalies
+
+### 🔴 High Severity: ERROR_SPIKE in auth-service
+- **Confidence**: 92%
+- **Evidence**: Error rate increased 3.4x vs baseline (0.9% → 3.1%)
+- **First Detected**: 2026-02-10 14:32:00 UTC
+
+### 🟡 Medium Severity: NEW_ERROR_SIGNATURE
+- **Signature**: DB_TIMEOUT
+- **Confidence**: 85%
+- **Occurrences**: 145
+- **First Seen**: 2026-02-10 14:15:00 UTC
+
+## Possible Explanations
+
+💡 **Hypothesis 1** (Confidence: 75%)
+Recent deployment at 14:15 may correlate with increased DB_TIMEOUT errors
+
+## Service Breakdown
+...
+
+## Top Error Signatures
+1. **DB_TIMEOUT** - 145 occurrences (38.9%)
+2. **AUTH_FAILED** - 89 occurrences (23.9%)
+```
+
+## Report Sections
+
+| Section | Description |
+|---------|-------------|
+| Executive Summary | High-level overview of findings |
+| Key Metrics | Important statistics and comparisons |
+| Detected Anomalies | Detailed anomaly information |
+| Possible Explanations | Root cause hypotheses |
+| Service Breakdown | Per-service statistics |
+| Top Error Signatures | Most frequent errors |
+
+## Related Skills
+
+- [Aggregate Logs](/skills/aggregate-logs) - Provides metrics
+- [Detect Anomalies](/skills/detect-anomalies) - Provides anomalies
+- [High Hypothesis](/skills/high-hypothesis) - Provides hypotheses
+- [Recommend Actions](/skills/recommend-actions) - Uses summary context

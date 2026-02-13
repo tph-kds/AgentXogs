@@ -1,0 +1,47 @@
+---
+title: "Anomaly Thresholds Configuration"
+description: "Configure anomaly detection thresholds for Live Log Insight."
+---
+
+# Anomaly Thresholds Configuration
+
+This page documents how to configure anomaly detection thresholds.
+
+## Configuration File
+
+Thresholds are defined in `config/anomaly_thresholds.yaml`.
+
+## Structure
+
+```yaml
+thresholds:
+  error_rate:
+    warning: 0.02    # 2% error rate triggers warning
+    critical: 0.05   # 5% error rate triggers critical
+    
+  error_spike:
+    min_change_factor: 2.0    # Minimum 2x increase
+    min_absolute_increase: 0.01  # At least 1% absolute increase
+    
+  new_signature:
+    min_occurrences: 10
+    lookback_hours: 24
+    
+  latency:
+    p95_spike_threshold: 1.5   # 1.5x baseline
+    p99_spike_threshold: 2.0   # 2x baseline
+```
+
+## Threshold Types
+
+| Threshold | Description |
+|-----------|-------------|
+| `error_rate` | Overall error rate thresholds |
+| `error_spike` | Sudden error rate increases |
+| `new_signature` | New error patterns |
+| `latency` | Response time anomalies |
+
+## Severity Levels
+
+- **Warning**: Elevated but manageable
+- **Critical**: Requires immediate attention

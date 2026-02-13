@@ -1,0 +1,151 @@
+---
+title: "Recommend Actions"
+description: "Translates findings into actionable next steps prioritized by severity."
+---
+
+# Recommend Actions
+
+Suggests concrete, testable actions for operators and developers based on analysis findings.
+
+## Overview
+
+This skill takes detected anomalies and hypotheses and translates them into prioritized action items. It uses predefined action templates to suggest remediation steps, investigation procedures, and preventive measures.
+
+## When to Use
+
+Use this skill when:
+- Anomalies or risks are identified
+- Human intervention is required
+- Creating action plans for incidents
+- Prioritizing remediation efforts
+
+## Directory Structure
+
+```
+recommend_actions/
+├── SKILL.md
+├── scripts/
+│   └── run.py
+└── config/
+    └── action_templates.yaml
+```
+
+## Instructions
+
+1. **Receive analysis results**: Accept outputs from `detect_anomalies`, `high_hypothesis`, and `generate_summary`
+
+2. **Load action templates**: Read `config/action_templates.yaml`
+
+3. **Run recommendation engine**: Execute action generation script
+
+4. **Outputs**: Return prioritized recommendations
+
+5. **Save recommendations**: Write to `output/recommendations.json`
+
+6. **Present to user**: Display in priority order with clear steps
+
+## Input
+
+```json
+{
+  "anomalies": [...],
+  "hypotheses": [...],
+  "service_context": {...}
+}
+```
+
+## Output
+
+```json
+{
+  "recommendations": [
+    {
+      "id": "rec_001",
+      "priority": "high",
+      "category": "investigation",
+      "action": "Check auth-service deployment at 14:15 UTC",
+      "rationale": "Deployment timestamp correlates with error spike start",
+      "steps": [
+        "Review deployment logs: kubectl logs -n prod deploy/auth-service",
+        "Check for database migrations in deployment",
+        "Compare with staging deployment that showed similar pattern"
+      ],
+      "estimated_time": "15 minutes",
+      "related_anomaly": "anom_001"
+    },
+    {
+      "id": "rec_002",
+      "priority": "high",
+      "category": "monitoring",
+      "action": "Inspect database connection pool metrics",
+      "rationale": "DB_TIMEOUT errors suggest connection or query performance issues",
+      "steps": [
+        "Check database server metrics for latency spikes",
+        "Review connection pool size and utilization",
+        "Analyze slow query logs for queries > 3000ms"
+      ],
+      "estimated_time": "20 minutes",
+      "related_anomaly": "anom_001"
+    },
+    {
+      "id": "rec_003",
+      "priority": "medium",
+      "category": "alerting",
+      "action": "Add alert for DB_TIMEOUT error signature",
+      "rationale": "New error type should be monitored going forward",
+      "steps": [
+        "Create alert rule in monitoring system",
+        "Set threshold: > 10 occurrences in 5 minutes",
+        "Configure notification to #ops-alerts channel"
+      ],
+      "estimated_time": "10 minutes",
+      "related_anomaly": "anom_002"
+    },
+    {
+      "id": "rec_004",
+      "priority": "low",
+      "category": "optimization",
+      "action": "Review auth-service timeout configuration",
+      "rationale": "P95 latency approaching timeout threshold",
+      "steps": [
+        "Review current timeout setting (3000ms)",
+        "Analyze if timeout should be increased or queries optimized",
+        "Consider implementing circuit breaker pattern"
+      ],
+      "estimated_time": "30 minutes",
+      "related_anomaly": "anom_001"
+    }
+  ],
+  "total_recommendations": 4,
+  "priority_summary": {
+    "high": 2,
+    "medium": 1,
+    "low": 1
+  }
+}
+```
+
+## Recommendation Structure
+
+| Field | Description |
+|-------|-------------|
+| `id` | Unique recommendation identifier |
+| `priority` | Priority level (high/medium/low) |
+| `category` | Type of action (investigation/monitoring/alerting/optimization) |
+| `action` | Brief description of the action |
+| `rationale` | Why this action is recommended |
+| `steps` | Step-by-step instructions |
+| `estimated_time` | Expected time to complete |
+| `related_anomaly` | Link to related anomaly |
+
+## Priority Levels
+
+- **High**: Immediate action required, significant impact
+- **Medium**: Should be addressed soon, moderate impact
+- Low**: Can be scheduled, minor impact
+
+## Related Skills
+
+- [Detect Anomalies](/skills/detect-anomalies) - Provides anomalies
+- [High Hypothesis](/skills/high-hypothesis) - Provides context
+- [Generate Summary](/skills/generate-summary) - Provides summary context

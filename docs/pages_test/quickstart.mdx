@@ -1,15 +1,15 @@
 ---
 title: "Quickstart"
-description: "Get up and running with Live Log Insight in 5 minutes."
+description: "Get up and running with AgentXogs in 5 minutes."
 ---
 
 # Quickstart Guide
 
-Get Live Log Insight running in just a few minutes.
+Get AgentXogs running in just a few minutes.
 
 ## Prerequisites
 
-- Python 3.11+
+- Python 3.10+
 - [uv](https://docs.astral.sh/uv/) package manager
 - Access to log sources you want to analyze
 
@@ -17,8 +17,8 @@ Get Live Log Insight running in just a few minutes.
 
 1. **Clone the repository**
 ```bash
-git clone https://github.com/yourusername/live-log-insight.git
-cd live-log-insight
+git clone https://github.com/tph-kds/AgentXogs.git
+cd AgentXogs
 ```
 
 2. **Install dependencies**
@@ -28,33 +28,28 @@ uv sync
 
 3. **Verify installation**
 ```bash
-uv run python main.py --help
+python src/setup/verify_installation.py
+# Or with uv:
+uv run src/setup/verify_installation.py
 ```
 
-## Basic Usage
+## Pipeline Usage
 
-### Run a Complete Pipeline
-
-Analyze logs from the past 24 hours in production:
+### Run Full Pipeline Script
 
 ```bash
-uv run main.py --time-range 24h --environment production
+# Using the shell script
+./scripts/pipeline.sh
+
+# Or directly with Python
+uv run src/agentX/pipeline/pipeline.py
 ```
 
-### Analyze Specific Service
-
-Focus on a specific service:
+### Pipeline Options
 
 ```bash
-uv run main.py --time-range 24h --environment production --service-name auth-service
-```
-
-### Filter by Severity
-
-Only analyze ERROR-level logs:
-
-```bash
-uv run main.py --time-range 24h --severity-filter ERROR
+# Custom config file
+uv run src/agentX/pipeline/pipeline.py --config custom-config.json
 ```
 
 ## Configuration
@@ -91,14 +86,16 @@ sources:
     port: 9200
     index: "auth-service-*"
     name: elasticsearch-logs
-```
-
-## Running the Pipeline Script
-
-You can also run the pipeline directly:
-
-```bash
-./scripts/pipeline.sh --help
+  - type: s3
+    bucket: my-logs-bucket
+    prefix: logs/
+    region: us-east-1
+  - type: cloudwatch
+    log_group: /aws/ec2/my-app
+    region: us-east-1
+  - type: loki
+    url: http://loki:3100
+    query: "{job=\"my-app\"}"
 ```
 
 ## Viewing Results
@@ -114,6 +111,9 @@ cat output/anomalies.json | python -m json.tool
 
 # View recommendations
 cat output/recommendations.json | python -m json.tool
+
+# View metrics
+cat output/metrics.json | python -m json.tool
 ```
 
 ## Sample Data
@@ -130,24 +130,17 @@ Sample files are located in `metadata/`:
 - `sample_parsed_events.json` - Sample parsed events
 - `sample_metrics.json` - Sample metrics
 
-## Next Steps
+## Pipeline Stages
 
-<CardGroup cols={2}>
-  <Card
-    title="Core Concepts"
-    icon="book"
-    href="/concepts/architecture"
-  >
-    Learn how the system works.
-  </Card>
-  <Card
-    title="Skills Reference"
-    icon="cubes"
-    href="/skills/livelogs-insights"
-  >
-    Explore all available skills.
-  </Card>
-</CardGroup>
+The analysis pipeline runs through these stages:
+
+1. **Log Source Discovery** - Identifies available log sources
+2. **Fetch Logs** - Retrieves raw logs from sources
+3. **Parse Logs** - Normalizes log formats
+4. **Aggregate Metrics** - Computes statistics
+5. **Detect Anomalies** - Identifies issues
+6. **Generate Hypotheses** - Root cause analysis
+7. **Create Summary** - Human-readable report
 
 ## Troubleshooting
 
@@ -166,3 +159,29 @@ Reduce `max_logs` in `config.json` or use a smaller time range.
 ### Dependencies not found
 
 Run `uv sync` to reinstall all dependencies.
+
+## Next Steps
+
+<CardGroup cols={3}>
+  <Card
+    title="CLI Reference"
+    icon="terminal"
+    href="/cli"
+  >
+    Learn to use the command-line interface.
+  </Card>
+  <Card
+    title="Core Concepts"
+    icon="book"
+    href="/concepts/architecture"
+  >
+    Learn how the system works.
+  </Card>
+  <Card
+    title="Skills Reference"
+    icon="cubes"
+    href="/skills/livelogs-insights"
+  >
+    Explore all available skills.
+  </Card>
+</CardGroup>

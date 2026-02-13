@@ -1,0 +1,115 @@
+---
+title: "Parse Logs"
+description: "Converts raw logs into structured, normalized log events with extracted fields."
+---
+
+# Parse Logs
+
+Normalizes unstructured log data into structured events with extracted fields.
+
+## Overview
+
+This skill transforms raw log entries into consistent, structured events. It extracts relevant fields such as timestamp, service, severity, error signatures, and metadata using predefined parsing rules.
+
+## When to Use
+
+Use this skill as a preprocessing step before:
+- Aggregation and metric computation
+- Anomaly detection
+- Trend analysis
+
+## Directory Structure
+
+```
+parse_logs/
+├── SKILL.md
+└── scripts/
+    └── run.py
+```
+
+## Instructions
+
+1. **Receive raw logs**: Accept output from `fetch_logs`
+
+2. **Load parsing rules**: Read `config/log_patterns.yaml`
+
+3. **Run parser**: Execute parsing script
+
+4. **Outputs**: Return normalized events
+
+5. **Pass to aggregator**: Provide events to `aggregate_logs`
+
+6. **Handle failures**: Log unparseable entries, continue processing
+
+## Input
+
+```json
+{
+  "logs": [
+    {
+      "timestamp": "2026-02-10T14:32:15Z",
+      "raw_message": "ERROR: Database connection timeout after 3000ms",
+      "source": "auth-service"
+    }
+  ],
+  "parsing_rules": "config/log_patterns.yaml"
+}
+```
+
+## Output
+
+```json
+{
+  "events": [
+    {
+      "timestamp": "2026-02-10T14:32:15Z",
+      "service": "auth-service",
+      "level": "ERROR",
+      "signature": "DB_TIMEOUT",
+      "message": "Database connection timeout after 3000ms",
+      "metadata": {
+        "latency_ms": 3000,
+        "host": "prod-01",
+        "error_code": "E1001"
+      }
+    }
+  ],
+  "parsed_count": 1234,
+  "failed_count": 5
+}
+```
+
+## Parsing Rules Format
+
+```yaml
+# config/log_patterns.yaml
+patterns:
+  - name: database_timeout
+    regex: "ERROR.*Database connection timeout after (\\d+)ms"
+    fields:
+      signature: "DB_TIMEOUT"
+      level: "ERROR"
+      latency_ms: group(1)
+      
+  - name: auth_failed
+    regex: ".*AUTH_FAILED.*"
+    fields:
+      signature: "AUTH_FAILED"
+      level: "ERROR"
+```
+
+## Supported Fields
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `timestamp` | ISO 8601 | Log timestamp |
+| `service` | string | Service name |
+| `level` | enum | Log level (DEBUG, INFO, WARN, ERROR) |
+| `signature` | string | Error signature identifier |
+| `message` | string | Human-readable message |
+| `metadata` | object | Additional extracted fields |
+
+## Related Skills
+
+- [Fetch Logs](/skills/fetch-logs) - Provides raw logs
+- [Aggregate Logs](/skills/aggregate-logs) - Processes parsed events
